@@ -115,30 +115,30 @@ function get(thistype)
         return Save()[thistype]
     end
 end
-function sendwebhook(title)
-    pcall(function()
-        local url = getgenv().webhooknek
-        local data = {
-        ["content"] = "Auto Comet",
-        ["embeds"] = {
-            {
-                ["title"] = "Noti!",
-                ["description"] = "Username: " .."||".. game.Players.LocalPlayer.Name.. "||".. "\nDiamond You Got: " ..  title,
-                ["type"] = "rich",
-                ["color"] = tonumber(0xff8200),
-            }
-        }
-        }
-        local newdata = game:GetService("HttpService"):JSONEncode(data)
+-- function sendwebhook(title)
+--     pcall(function()
+--         local url = getgenv().webhooknek
+--         local data = {
+--         ["content"] = "Auto Comet",
+--         ["embeds"] = {
+--             {
+--                 ["title"] = "Noti!",
+--                 ["description"] = "Username: " .."||".. game.Players.LocalPlayer.Name.. "||".. "\nDiamond You Got: " ..  title,
+--                 ["type"] = "rich",
+--                 ["color"] = tonumber(0xff8200),
+--             }
+--         }
+--         }
+--         local newdata = game:GetService("HttpService"):JSONEncode(data)
     
-        local headers = {
-        ["content-type"] = "application/json"
-        }
-        request = http_request or request or HttpPost or syn.request
-        local abcdef = {Url = url, Body = newdata, Method = "POST", Headers = headers}
-        request(abcdef)
-    end)
-end
+--         local headers = {
+--         ["content-type"] = "application/json"
+--         }
+--         request = http_request or request or HttpPost or syn.request
+--         local abcdef = {Url = url, Body = newdata, Method = "POST", Headers = headers}
+--         request(abcdef)
+--     end)
+-- end
 local dbuiquanre = get("Diamonds")
 local UserInputService = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
@@ -169,11 +169,11 @@ spawn(function()
                     end
                 end
             else
-                if getcommet() == false and getgenv().hasfarm == true and getgenv().webhooknek ~= "" then
-                    wait(7)
-                    sendwebhook(tostring(Commas(get("Diamonds") - dbuiquanre)))
-                    getgenv().hasfarm = false
-                end
+                -- if getcommet() == false and getgenv().hasfarm == true and getgenv().webhooknek ~= "" then
+                --     wait(7)
+                --     sendwebhook(tostring(Commas(get("Diamonds") - dbuiquanre)))
+                --     getgenv().hasfarm = false
+                -- end
                 if getcommet() == false and getgenv().hasfarm == true then
                     wait(7)
                     hopserver()
