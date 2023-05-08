@@ -170,11 +170,16 @@ spawn(function()
                 end
             else
                 if getcommet() == false and getgenv().hasfarm == true and getgenv().webhooknek ~= "" then
-                    wait(4)
+                    wait(7)
                     sendwebhook(tostring(Commas(get("Diamonds") - dbuiquanre)))
                     getgenv().hasfarm = false
                 end
-                hopserver()
+                if getcommet() == false and getgenv().hasfarm == true then
+                    wait(7)
+                    hopserver()
+                elseif getcommet() == false then
+                    hopserver()
+                end
             end
         end)
     end
