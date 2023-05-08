@@ -143,20 +143,8 @@ local dbuiquanre = get("Diamonds")
 local UserInputService = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
 
-local WindowFocusReleasedFunction = function()
-    RunService:Set3dRenderingEnabled(false)
-    return
-end
-
-local WindowFocusedFunction = function()
-    RunService:Set3dRenderingEnabled(true)
-    return
-end
-
 local Initialize = function()
-    UserInputService.WindowFocusReleased:Connect(WindowFocusReleasedFunction)
-    UserInputService.WindowFocused:Connect(WindowFocusedFunction)
-    return
+    RunService:Set3dRenderingEnabled(false)
 end
 
 spawn(function()
