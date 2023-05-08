@@ -49,9 +49,7 @@ for i,v in pairs(getgenv().daubuoi.Idserver) do
     getgenv().servernz = getgenv().servernz + 1
 end
 if getgenv().servernz > 15 then
-    getgenv().daubuoi = {
-        Idserver = {}
-    }
+    getgenv().daubuoi.Idserver = {}
     save()
 end
 function tablefind(a,b)
