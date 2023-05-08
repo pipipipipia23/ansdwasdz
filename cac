@@ -93,12 +93,6 @@ getgenv().hasfarm = false
 local Save = v1.Save.Get
 local Commas = v1.Functions.Commas
 
-for i, v in pairs(menus:GetChildren()) do
-    if v.ClassName == 'Frame' and v.Name ~= 'Rank' and types[i] == nil then
-        table.insert(types, v.Name)
-    end
-end
-
 function get(thistype)
     if game.PlaceId == 10321372166 and string.find(string.lower(thistype), "coins") then
         return Save().HardcoreCurrency[thistype]
