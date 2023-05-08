@@ -99,6 +99,9 @@ if getcommet() ~= false then
             end
         end
     end
+else
+    print("Hop server")
+    hopserver()
 end
 
 -- if getcommet() ~= false then
