@@ -92,46 +92,23 @@ workspace.__THINGS.Lootbags.ChildAdded:Connect(function(v)
     end)
 end)
 
-if getcommet() ~= false then
-    if not game:GetService("Workspace")["__THINGS"].Coins:FindFirstChild(getcommet()[1]) then
-        hihi.Teleport(getcommet()[2],true)
-        wait(5)
-    else
-        for i1,v1 in pairs(Client.PetCmds.GetEquipped()) do
-            if getcommet() ~= false then
-                Client.Network.Invoke('Join Coin', getcommet()[1], {v1.uid})
-                Client.Network.Fire('Farm Coin', getcommet()[1], v1.uid)
+while true do wait(1)
+    pcall(function()
+        if getcommet() ~= false then
+            if not game:GetService("Workspace")["__THINGS"].Coins:FindFirstChild(getcommet()[1]) then
+                hihi.Teleport(getcommet()[2],true)
+                wait(5)
+            else
+                for i1,v1 in pairs(Client.PetCmds.GetEquipped()) do
+                    if getcommet() ~= false then
+                        Client.Network.Invoke('Join Coin', getcommet()[1], {v1.uid})
+                        Client.Network.Fire('Farm Coin', getcommet()[1], v1.uid)
+                    end
+                end
             end
+        else
+            print("Hop server")
+            hopserver()
         end
-    end
-else
-    print("Hop server")
-    hopserver()
+    end)
 end
-
--- if getcommet() ~= false then
---     if getcommet() ~= false and v1.WorldCmds.HasArea(getcommet()[2]) then
---         getgenv().autocometne = true
---         if not game:GetService("Workspace")["__THINGS"].Coins:FindFirstChild(getcommet()[1]) then
---             hihi.Teleport(getcommet()[2],true)
---         else
---             for i1,v1 in pairs(Client.PetCmds.GetEquipped()) do
---                 if getcommet() ~= false then
---                     Client.Network.Invoke('Join Coin', getcommet()[1], {v1.uid})
---                     Client.Network.Fire('Farm Coin', getcommet()[1], v1.uid)
---                 end
---             end
---         end
---     end
--- end
--- spawn(function()
---     while true do wait(3)
---         pcall(function()
---             if getcommet() == false then
---                 print("here")
---                 wait(4)
---                 hopserver()
---             end
---         end)
---     end
--- end)
