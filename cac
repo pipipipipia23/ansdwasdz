@@ -48,13 +48,18 @@ function tablefind(a,b)
 	end
 	return false
 end
+getgenv().solanhop = 0
 function hopserver()
 	Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. tostring(game.PlaceId) .. '/servers/Public?sortOrder=Asc&limit=10'))
 	for i,v in pairs(Site.data) do
-		if v.ping < 500 and v.playing <= 5 and tablefind(getgenv().daubuoi.Idserver, tostring(v.id)) == false then
+        if getgenv().solanhop > 6 then
+            game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, tostring(game.JobId), game.Players.LocalPlayer)
+        end
+		if v.ping < 500 and v.playing <= 5 and tablefind(getgenv().daubuoi.Idserver, tostring(v.id)) == false and getgenv().solanhop <= 6 then
 			table.insert(getgenv().daubuoi.Idserver, tostring(v.id))
 			save()
 			print("Hop sv now")
+            getgenv().solanhop = getgenv().solanhop + 1
 			pcall(function()
 				game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, tostring(v.id), game.Players.LocalPlayer)
 			end)
