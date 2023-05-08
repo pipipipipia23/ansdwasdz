@@ -1,1 +1,158 @@
+getgenv().webhooknek = "https://discord.com/api/webhooks/883171082658517012/UC_sQL4RCgXtI25L9As3QAfDU8bYjpsMB0DXWPc695uYWMjD-YJIan12UPVonbOvFzwI"
+if not game:IsLoaded() then game.Loaded:Wait() end
+repeat wait() until game.Players
+repeat wait() until game.Players.LocalPlayer
+repeat wait() until game.ReplicatedStorage
+repeat wait() until game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui")
+repeat wait() until game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("Main")
+repeat wait() until game:GetService("Players").LocalPlayer.PlayerGui.Main.Right
+repeat wait() until game:GetService("Workspace"):FindFirstChild("__MAP")
+local Client = require(game.ReplicatedStorage.Library.Client)
+local Orbs = getsenv(game.Players.LocalPlayer.PlayerScripts.Scripts.Game.Orbs)
+local Lootbags = getsenv(game.Players.LocalPlayer.PlayerScripts.Scripts.Game.Lootbags)
+getrenv().require = getgenv().require -- method tvk hihi (iu tvk vcl)
+debug.setupvalue(Client.Network.Invoke, 1, function() return true end)
+debug.setupvalue(Client.Network.Fire, 1, function() return true end)
+local hihi = getsenv(game:GetService("Players").LocalPlayer.PlayerScripts.Scripts.GUIs.Teleport)
+local v1 = require(game.ReplicatedStorage:WaitForChild("Framework"):WaitForChild("Library"))
+getgenv().daubuoi = {
+	Idserver = {}
+}
+function check()
+	if not isfile("DoQuanhHopServerNek"..".json") then
+		writefile("DoQuanhHopServerNek" .. ".json", game:GetService("HttpService"):JSONEncode(getgenv().daubuoi))
+	end
+end
+function save()
+	if isfile("DoQuanhHopServerNek"..".json") then
+		writefile("DoQuanhHopServerNek" .. ".json", game:GetService("HttpService"):JSONEncode(getgenv().daubuoi))
+	else
+		check()
+	end
+end
+function load()
+	if isfile("DoQuanhHopServerNek"..".json") then
+		v = game:GetService("HttpService"):JSONDecode(readfile("DoQuanhHopServerNek" .. ".json"))
+		print("Loaded")
+		getgenv().daubuoi = v
+		return getgenv().daubuoi
+	else
+		check()
+	end
+end
+check()
+load()
+save()
+function tablefind(a,b)
+	if table.find(a,b) then
+		return true
+	end
+	return false
+end
+getgenv().solanhop = 0
+function hopserver()
+    if getgenv().solanhop > 6 then
+        game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, tostring(game.JobId), game.Players.LocalPlayer)
+    end
+	Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. tostring(game.PlaceId) .. '/servers/Public?sortOrder=Asc&limit=10'))
+	for i,v in pairs(Site.data) do
+		if v.ping < 500 and v.playing <= 5 and tablefind(getgenv().daubuoi.Idserver, tostring(v.id)) == false and getgenv().solanhop <= 6 then
+			table.insert(getgenv().daubuoi.Idserver, tostring(v.id))
+			save()
+			print("Hop sv now")
+            getgenv().solanhop = getgenv().solanhop + 1
+			game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, tostring(v.id), game.Players.LocalPlayer)
+            local tok = tick()
+            repeat wait()
 
+            until tick() - tok >= 5
+		end
+	end
+end
+function getcommet()
+    local getcomets = Client.Network.Invoke("Comets: Get Data")
+    for i,v in pairs(getcomets) do
+        if getcomets[i].AreaId ~= "Town" and v1.WorldCmds.HasArea(getcomets[i].AreaId) then
+            return {getcomets[i].CoinId , getcomets[i].AreaId}
+        end
+    end
+    return false
+end
+
+
+workspace.__THINGS.Orbs.ChildAdded:Connect(function(v)
+    pcall(function()
+        Orbs.Collect(v)
+    end)
+end)
+
+workspace.__THINGS.Lootbags.ChildAdded:Connect(function(v)
+    pcall(function()
+        Lootbags.Collect(v)
+    end)
+end)
+
+getgenv().hasfarm = false
+
+local Save = v1.Save.Get
+local Commas = v1.Functions.Commas
+
+function get(thistype)
+    if game.PlaceId == 10321372166 and string.find(string.lower(thistype), "coins") then
+        return Save().HardcoreCurrency[thistype]
+    else
+        return Save()[thistype]
+    end
+end
+function sendwebhook(title)
+    pcall(function()
+        local url = getgenv().webhooknek
+        local data = {
+        ["content"] = "Auto Comet",
+        ["embeds"] = {
+            {
+                ["title"] = "Noti!",
+                ["description"] = "Username: " .."||".. game.Players.LocalPlayer.Name.. "||".. "\nDiamond You Got: " ..  title,
+                ["type"] = "rich",
+                ["color"] = tonumber(0xff8200),
+            }
+        }
+        }
+        local newdata = game:GetService("HttpService"):JSONEncode(data)
+    
+        local headers = {
+        ["content-type"] = "application/json"
+        }
+        request = http_request or request or HttpPost or syn.request
+        local abcdef = {Url = url, Body = newdata, Method = "POST", Headers = headers}
+        request(abcdef)
+    end)
+end
+local dbuiquanre = get("Diamonds")
+spawn(function()
+    while true do wait(1)
+        pcall(function()
+            if getcommet() ~= false then
+                if not game:GetService("Workspace")["__THINGS"].Coins:FindFirstChild(getcommet()[1]) then
+                    hihi.Teleport(getcommet()[2],true)
+                    wait(5)
+                else
+                    for i1,v1 in pairs(Client.PetCmds.GetEquipped()) do
+                        if getcommet() ~= false then
+                            getgenv().hasfarm = true
+                            Client.Network.Invoke('Join Coin', getcommet()[1], {v1.uid})
+                            Client.Network.Fire('Farm Coin', getcommet()[1], v1.uid)
+                        end
+                    end
+                end
+            else
+                if getcommet() == false and getgenv().hasfarm == true and getgenv().webhooknek ~= "" then
+                    wait(4)
+                    sendwebhook(tostring(Commas(get("Diamonds") - dbuiquanre)))
+                    getgenv().hasfarm = false
+                end
+                hopserver()
+            end
+        end)
+    end
+end)
