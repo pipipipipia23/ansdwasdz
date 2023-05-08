@@ -60,12 +60,7 @@ function hopserver()
 			save()
 			print("Hop sv now")
             getgenv().solanhop = getgenv().solanhop + 1
-			pcall(function()
-				game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, tostring(v.id), game.Players.LocalPlayer)
-			end)
-			local tak = tick()
-			repeat wait()
-			until tick() - tak > 10
+			game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, tostring(v.id), game.Players.LocalPlayer)
 		end
 	end
 end
@@ -78,7 +73,7 @@ function getcommet()
     end
     return false
 end
-getcommet()
+
 
 workspace.__THINGS.Orbs.ChildAdded:Connect(function(v)
     pcall(function()
