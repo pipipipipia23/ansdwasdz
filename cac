@@ -162,8 +162,8 @@ end
 function farmcomet()
     if getcommet() ~= false then
         if not game:GetService("Workspace")["__THINGS"].Coins:FindFirstChild(getcommet()[1]) then
-            teleportto2(getcommet()[2])
             wait(5)
+            teleportto2(getcommet()[2])
         else
             for i1,v1 in pairs(Client.PetCmds.GetEquipped()) do
                 if getcommet() ~= false then
