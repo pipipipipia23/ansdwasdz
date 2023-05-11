@@ -9,13 +9,11 @@ repeat wait() until game:GetService("Players").LocalPlayer.PlayerGui:FindFirstCh
 repeat wait() until game:GetService("Players").LocalPlayer.PlayerGui.Main.Right
 repeat wait() until game:GetService("Workspace"):FindFirstChild("__MAP")
 local Client = require(game.ReplicatedStorage.Library.Client)
+local v1 = require(game.ReplicatedStorage:WaitForChild("Framework"):WaitForChild("Library"))
 local Orbs = getsenv(game.Players.LocalPlayer.PlayerScripts.Scripts.Game.Orbs)
 local Lootbags = getsenv(game.Players.LocalPlayer.PlayerScripts.Scripts.Game.Lootbags)
 getrenv().require = getgenv().require -- method tvk hihi (iu tvk vcl)
-debug.setupvalue(Client.Network.Invoke, 1, function() return true end)
-debug.setupvalue(Client.Network.Fire, 1, function() return true end)
 local hihi = getsenv(game:GetService("Players").LocalPlayer.PlayerScripts.Scripts.GUIs.Teleport)
-local v1 = require(game.ReplicatedStorage:WaitForChild("Framework"):WaitForChild("Library"))
 local PlaceID = game.PlaceId
 local AllIDs = {}
 local foundAnything = ""
@@ -91,6 +89,8 @@ function TeleportSHOP()
         end
     end)
 end	
+debug.setupvalue(Client.Network.Invoke, 1, function() return true end)
+debug.setupvalue(Client.Network.Fire, 1, function() return true end)
 function getcommet()
     local getcomets = Client.Network.Invoke("Comets: Get Data")
     for i,v in pairs(getcomets) do
@@ -100,7 +100,6 @@ function getcommet()
     end
     return false
 end
-
 
 workspace.__THINGS.Orbs.ChildAdded:Connect(function(v)
     pcall(function()
@@ -169,6 +168,7 @@ spawn(function()
                             getgenv().hasfarm = true
                             Client.Network.Invoke('Join Coin', getcommet()[1], {v1.uid})
                             Client.Network.Fire('Farm Coin', getcommet()[1], v1.uid)
+                            wait(.2)
                         end
                     end
                 end
