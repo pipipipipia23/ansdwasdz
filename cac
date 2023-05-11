@@ -155,13 +155,15 @@ end
 --     RunService:Set3dRenderingEnabled(false)
 -- end
 -- pcall(Initialize)
+function teleportto2(t)
+    hihi.Teleport(t,true)
+end
 spawn(function()
     while true do wait(1)
         pcall(function()
             if getcommet() ~= false then
                 if not game:GetService("Workspace")["__THINGS"].Coins:FindFirstChild(getcommet()[1]) then
-                    hihi.Teleport(getcommet()[2],true)
-                    wait(5)
+                    teleportto2(getcommet()[2])
                 else
                     for i1,v1 in pairs(Client.PetCmds.GetEquipped()) do
                         if getcommet() ~= false then
