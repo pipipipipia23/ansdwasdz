@@ -1,4 +1,4 @@
-if getgenv().bulonluon == nil then
+if getgenv().bulonluon == true then
 -- getgenv().webhooknek = "https://discord.com/api/webhooks/883171082658517012/UC_sQL4RCgXtI25L9As3QAfDU8bYjpsMB0DXWPc695uYWMjD-YJIan12UPVonbOvFzwI"
 if not game:IsLoaded() then game.Loaded:Wait() end
 repeat wait() until game.Players
@@ -152,8 +152,6 @@ end
 -- end
 -- local dbuiquanre = get("Diamonds")
 -- local UserInputService = game:GetService("UserInputService")
--- local RunService = game:GetService("RunService")
-
 -- local Initialize = function()
 --     RunService:Set3dRenderingEnabled(false)
 -- end
