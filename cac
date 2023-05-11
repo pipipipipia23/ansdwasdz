@@ -1,5 +1,5 @@
 if getgenv().bulonluon == nil then
-getgenv().webhooknek = "https://discord.com/api/webhooks/883171082658517012/UC_sQL4RCgXtI25L9As3QAfDU8bYjpsMB0DXWPc695uYWMjD-YJIan12UPVonbOvFzwI"
+-- getgenv().webhooknek = "https://discord.com/api/webhooks/883171082658517012/UC_sQL4RCgXtI25L9As3QAfDU8bYjpsMB0DXWPc695uYWMjD-YJIan12UPVonbOvFzwI"
 if not game:IsLoaded() then game.Loaded:Wait() end
 repeat wait() until game.Players
 repeat wait() until game.Players.LocalPlayer
@@ -26,6 +26,14 @@ local File = pcall(function()
 end)
 if not File then
     table.insert(AllIDs, actualHour)
+    writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
+end
+cac = 0
+for i,v in pairs(AllIDs) do
+    cac = cac + 1
+end
+if cac >= 15 then
+    AllIDs = {}
     writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
 end
 function TPReturner()
@@ -118,38 +126,38 @@ function get(thistype)
         return Save()[thistype]
     end
 end
-function sendwebhook(title)
-    pcall(function()
-        local url = getgenv().webhooknek
-        local data = {
-        ["content"] = "Auto Comet",
-        ["embeds"] = {
-            {
-                ["title"] = "Noti!",
-                ["description"] = "Username: " .."||".. game.Players.LocalPlayer.Name.. "||".. "\nDiamond You Got: " ..  title,
-                ["type"] = "rich",
-                ["color"] = tonumber(0xff8200),
-            }
-        }
-        }
-        local newdata = game:GetService("HttpService"):JSONEncode(data)
+-- function sendwebhook(title)
+--     pcall(function()
+--         local url = getgenv().webhooknek
+--         local data = {
+--         ["content"] = "Auto Comet",
+--         ["embeds"] = {
+--             {
+--                 ["title"] = "Noti!",
+--                 ["description"] = "Username: " .."||".. game.Players.LocalPlayer.Name.. "||".. "\nDiamond You Got: " ..  title,
+--                 ["type"] = "rich",
+--                 ["color"] = tonumber(0xff8200),
+--             }
+--         }
+--         }
+--         local newdata = game:GetService("HttpService"):JSONEncode(data)
     
-        local headers = {
-        ["content-type"] = "application/json"
-        }
-        request = http_request or request or HttpPost or syn.request
-        local abcdef = {Url = url, Body = newdata, Method = "POST", Headers = headers}
-        request(abcdef)
-    end)
-end
-local dbuiquanre = get("Diamonds")
-local UserInputService = game:GetService("UserInputService")
-local RunService = game:GetService("RunService")
+--         local headers = {
+--         ["content-type"] = "application/json"
+--         }
+--         request = http_request or request or HttpPost or syn.request
+--         local abcdef = {Url = url, Body = newdata, Method = "POST", Headers = headers}
+--         request(abcdef)
+--     end)
+-- end
+-- local dbuiquanre = get("Diamonds")
+-- local UserInputService = game:GetService("UserInputService")
+-- local RunService = game:GetService("RunService")
 
-local Initialize = function()
-    RunService:Set3dRenderingEnabled(false)
-end
-pcall(Initialize)
+-- local Initialize = function()
+--     RunService:Set3dRenderingEnabled(false)
+-- end
+-- pcall(Initialize)
 spawn(function()
     while true do wait(1)
         pcall(function()
@@ -167,11 +175,11 @@ spawn(function()
                     end
                 end
             else
-                if getcommet() == false and getgenv().hasfarm == true and getgenv().webhooknek ~= "" then
-                    wait(7)
-                    sendwebhook(tostring(Commas(get("Diamonds") - dbuiquanre)))
-                    getgenv().hasfarm = false
-                end
+                -- if getcommet() == false and getgenv().hasfarm == true and getgenv().webhooknek ~= "" then
+                --     wait(7)
+                --     sendwebhook(tostring(Commas(get("Diamonds") - dbuiquanre)))
+                --     getgenv().hasfarm = false
+                -- end
                 if getcommet() == false and getgenv().hasfarm == true then
                     wait(7)
                     TeleportSHOP()
