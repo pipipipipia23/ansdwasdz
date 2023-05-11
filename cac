@@ -8,7 +8,6 @@ repeat wait() until game:GetService("Players").LocalPlayer:FindFirstChild("Playe
 repeat wait() until game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("Main")
 repeat wait() until game:GetService("Players").LocalPlayer.PlayerGui.Main.Right
 repeat wait() until game:GetService("Workspace"):FindFirstChild("__MAP")
-wait(5)
 local Client = require(game.ReplicatedStorage.Library.Client)
 local Orbs = getsenv(game.Players.LocalPlayer.PlayerScripts.Scripts.Game.Orbs)
 local Lootbags = getsenv(game.Players.LocalPlayer.PlayerScripts.Scripts.Game.Lootbags)
