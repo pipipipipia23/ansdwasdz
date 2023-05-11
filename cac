@@ -12,6 +12,8 @@ local Client = require(game.ReplicatedStorage.Library.Client)
 local v1 = require(game.ReplicatedStorage:WaitForChild("Framework"):WaitForChild("Library"))
 local Orbs = getsenv(game.Players.LocalPlayer.PlayerScripts.Scripts.Game.Orbs)
 local Lootbags = getsenv(game.Players.LocalPlayer.PlayerScripts.Scripts.Game.Lootbags)
+debug.setupvalue(Client.Network.Invoke, 1, function() return true end)
+debug.setupvalue(Client.Network.Fire, 1, function() return true end)
 getrenv().require = getgenv().require -- method tvk hihi (iu tvk vcl)
 local hihi = getsenv(game:GetService("Players").LocalPlayer.PlayerScripts.Scripts.GUIs.Teleport)
 local PlaceID = game.PlaceId
@@ -89,8 +91,6 @@ function TeleportSHOP()
         end
     end)
 end	
-debug.setupvalue(Client.Network.Invoke, 1, function() return true end)
-debug.setupvalue(Client.Network.Fire, 1, function() return true end)
 function getcommet()
     local getcomets = Client.Network.Invoke("Comets: Get Data")
     for i,v in pairs(getcomets) do
@@ -158,36 +158,40 @@ end
 function teleportto2(t)
     hihi.Teleport(t,true)
 end
-spawn(function()
-    while true do wait(1)
-        pcall(function()
-            if getcommet() ~= false then
-                if not game:GetService("Workspace")["__THINGS"].Coins:FindFirstChild(getcommet()[1]) then
-                    teleportto2(getcommet()[2])
-                else
-                    for i1,v1 in pairs(Client.PetCmds.GetEquipped()) do
-                        if getcommet() ~= false then
-                            getgenv().hasfarm = true
-                            Client.Network.Invoke('Join Coin', getcommet()[1], {v1.uid})
-                            Client.Network.Fire('Farm Coin', getcommet()[1], v1.uid)
-                            wait(.2)
-                        end
-                    end
-                end
-            else
-                -- if getcommet() == false and getgenv().hasfarm == true and getgenv().webhooknek ~= "" then
-                --     wait(7)
-                --     sendwebhook(tostring(Commas(get("Diamonds") - dbuiquanre)))
-                --     getgenv().hasfarm = false
-                -- end
-                if getcommet() == false and getgenv().hasfarm == true then
-                    wait(7)
-                    TeleportSHOP()
-                elseif getcommet() == false then
-                    TeleportSHOP()
+
+function farmcomet()
+    if getcommet() ~= false then
+        if not game:GetService("Workspace")["__THINGS"].Coins:FindFirstChild(getcommet()[1]) then
+            teleportto2(getcommet()[2])
+            wait(5)
+        else
+            for i1,v1 in pairs(Client.PetCmds.GetEquipped()) do
+                if getcommet() ~= false then
+                    getgenv().hasfarm = true
+                    Client.Network.Invoke('Join Coin', getcommet()[1], {v1.uid})
+                    Client.Network.Fire('Farm Coin', getcommet()[1], v1.uid)
+                    wait(.2)
                 end
             end
-        end)
+        end
+    else
+        -- if getcommet() == false and getgenv().hasfarm == true and getgenv().webhooknek ~= "" then
+        --     wait(7)
+        --     sendwebhook(tostring(Commas(get("Diamonds") - dbuiquanre)))
+        --     getgenv().hasfarm = false
+        -- end
+        if getcommet() == false and getgenv().hasfarm == true then
+            wait(7)
+            TeleportSHOP()
+        elseif getcommet() == false then
+            TeleportSHOP()
+        end
+    end
+end
+
+spawn(function()
+    while true do wait(1)
+        pcall(farmcomet)
     end
 end)
 getgenv().bulonluon = true
