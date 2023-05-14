@@ -10,8 +10,6 @@ repeat wait() until game:GetService("Players").LocalPlayer.PlayerGui.Main.Right
 repeat wait() until game:GetService("Workspace"):FindFirstChild("__MAP")
 local Client = require(game.ReplicatedStorage.Library.Client)
 local v1 = require(game.ReplicatedStorage:WaitForChild("Framework"):WaitForChild("Library"))
-local Orbs = getsenv(game.Players.LocalPlayer.PlayerScripts.Scripts.Game.Orbs)
-local Lootbags = getsenv(game.Players.LocalPlayer.PlayerScripts.Scripts.Game.Lootbags)
 debug.setupvalue(Client.Network.Invoke, 1, function() return true end)
 debug.setupvalue(Client.Network.Fire, 1, function() return true end)
 local plr = game.Players.LocalPlayer
@@ -99,18 +97,6 @@ function getcommet()
     end
     return false
 end
-
-workspace.__THINGS.Orbs.ChildAdded:Connect(function(v)
-    pcall(function()
-        Orbs.Collect(v)
-    end)
-end)
-
-workspace.__THINGS.Lootbags.ChildAdded:Connect(function(v)
-    pcall(function()
-        Lootbags.Collect(v)
-    end)
-end)
 
 getgenv().hasfarm = false
 
