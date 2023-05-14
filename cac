@@ -329,6 +329,32 @@ function farmcomet()
 end
 
 spawn(function()
+    pcall(function()
+        while true do wait()
+            pcall(function()
+                for i,v in pairs(game:GetService("Workspace")["__THINGS"].Orbs:GetChildren()) do
+                    v.CanCollide = false
+                    v.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame + Vector3.new(0,0,0)
+                end
+            end)
+        end
+    end)
+end)
+
+spawn(function()
+    pcall(function()
+        while true do wait()
+            pcall(function()
+                for i,v in pairs(game:GetService("Workspace")["__THINGS"].Lootbags:GetChildren()) do
+                    v.CanCollide = false
+                    v.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame + Vector3.new(0,0,0)
+                end
+            end)
+        end
+    end)
+end)
+
+spawn(function()
     while true do wait()
         local a,b = pcall(farmcomet)
         print(a,b)
