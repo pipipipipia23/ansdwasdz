@@ -92,7 +92,7 @@ function getcommet()
     local getcomets = Client.Network.Invoke("Comets: Get Data")
     for i,v in pairs(getcomets) do
         if getcomets[i].AreaId ~= "Town" and v1.WorldCmds.HasArea(getcomets[i].AreaId) then
-            return {getcomets[i].CoinId , getcomets[i].AreaId}
+            return {getcomets[i].CoinId , getcomets[i].AreaId, getcomets[i].SpawnPosition}
         end
     end
     return false
@@ -287,7 +287,7 @@ function farmcomet()
             for i1,v1 in pairs(Client.PetCmds.GetEquipped()) do
                 if getcommet() ~= false then
                     getgenv().hasfarm = true
-                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace")["__MAP"].Areas[getcommet()[2]].Ground.CFrame * CFrame.new(0,10,0)
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(getcommet()[3])
                     Client.Network.Invoke('Join Coin', getcommet()[1], {v1.uid})
                     Client.Network.Fire('Farm Coin', getcommet()[1], v1.uid)
                     wait(.2)
