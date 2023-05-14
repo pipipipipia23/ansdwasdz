@@ -14,7 +14,7 @@ local Orbs = getsenv(game.Players.LocalPlayer.PlayerScripts.Scripts.Game.Orbs)
 local Lootbags = getsenv(game.Players.LocalPlayer.PlayerScripts.Scripts.Game.Lootbags)
 debug.setupvalue(Client.Network.Invoke, 1, function() return true end)
 debug.setupvalue(Client.Network.Fire, 1, function() return true end)
-local hihi = getsenv(game:GetService("Players").LocalPlayer.PlayerScripts.Scripts.GUIs.Teleport)
+local plr = game.Players.LocalPlayer
 local PlaceID = game.PlaceId
 local AllIDs = {}
 local foundAnything = ""
@@ -318,7 +318,12 @@ function farmcomet()
             wait(7)
             TeleportSHOP()
         elseif getcommet() == false then
-            TeleportSHOP()
+            if getgenv().hasfarm == true then
+                wait(7)
+                TeleportSHOP()
+            else
+                TeleportSHOP()
+            end
         end
     end
 end
