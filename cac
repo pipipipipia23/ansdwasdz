@@ -1,5 +1,3 @@
-if getgenv().bulonluon == true then
--- getgenv().webhooknek = "https://discord.com/api/webhooks/883171082658517012/UC_sQL4RCgXtI25L9As3QAfDU8bYjpsMB0DXWPc695uYWMjD-YJIan12UPVonbOvFzwI"
 if not game:IsLoaded() then game.Loaded:Wait() end
 repeat wait() until game.Players
 repeat wait() until game.Players.LocalPlayer
@@ -8,191 +6,145 @@ repeat wait() until game:GetService("Players").LocalPlayer:FindFirstChild("Playe
 repeat wait() until game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("Main")
 repeat wait() until game:GetService("Players").LocalPlayer.PlayerGui.Main.Right
 repeat wait() until game:GetService("Workspace"):FindFirstChild("__MAP")
+local plr = game.Players.LocalPlayer
 local Client = require(game.ReplicatedStorage.Library.Client)
 local v1 = require(game.ReplicatedStorage:WaitForChild("Framework"):WaitForChild("Library"))
 local Orbs = getsenv(game.Players.LocalPlayer.PlayerScripts.Scripts.Game.Orbs)
 local Lootbags = getsenv(game.Players.LocalPlayer.PlayerScripts.Scripts.Game.Lootbags)
 debug.setupvalue(Client.Network.Invoke, 1, function() return true end)
 debug.setupvalue(Client.Network.Fire, 1, function() return true end)
-getrenv().require = getgenv().require -- method tvk hihi (iu tvk vcl)
-local hihi = getsenv(game:GetService("Players").LocalPlayer.PlayerScripts.Scripts.GUIs.Teleport)
-local PlaceID = game.PlaceId
-local AllIDs = {}
-local foundAnything = ""
-local actualHour = os.date("!*t").hour
-local Deleted = false
-local File = pcall(function()
-    AllIDs = game:GetService('HttpService'):JSONDecode(readfile("NotSameServers.json"))
-end)
-if not File then
-    table.insert(AllIDs, actualHour)
-    writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
-end
-cac = 0
-for i,v in pairs(AllIDs) do
-    cac = cac + 1
-end
-if cac >= 15 then
-    AllIDs = {}
-    writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
-end
-function TPReturner()
-    local Site;
-    if foundAnything == "" then
-        Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100'))
-    else
-        Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100&cursor=' .. foundAnything))
+local mapList = {}
+local getmaptp = game:GetService("Players").LocalPlayer.PlayerGui.Teleport.Frame.LeftContainer.Holder
+for i,v in pairs(getmaptp:GetChildren()) do
+    if v:IsA("TextButton") and v.Name ~= "WorldTemplate" then
+        table.insert(mapList, v.Name)
     end
-    local ID = ""
-    if Site.nextPageCursor and Site.nextPageCursor ~= "null" and Site.nextPageCursor ~= nil then
-        foundAnything = Site.nextPageCursor
+end
+function getmapnek(b)
+    return v1.Directory.Areas[b].world
+end
+function getmap(a)
+    Default = 0
+    for i,v in pairs(mapList) do
+        if mapList[i] == v1.WorldCmds.Get() then
+            Default = i
+        end
+        if Default ~= 0 then
+            local up = #mapList - Default
+            local down = #mapList - (#mapList - Default)
+            upne = 0
+            downne = 0
+            for q = 1, up do
+                upne = upne + 1
+                if (mapList[Default + upne]) == getmapnek(a) then
+                    return true
+                end
+            end
+            for q = 1, down do
+                downne = downne + 1
+                if (mapList[Default - downne]) == getmapnek(a) then
+                    return false
+                end
+            end
+        end
     end
-    local num = 0;
-    for i,v in pairs(Site.data) do
-        local Possible = true
-        ID = tostring(v.id)
-        if tonumber(v.playing) <= 11 then
-            for _,Existing in pairs(AllIDs) do
-                if num ~= 0 then
-                    if ID == tostring(Existing) then
-                        Possible = false
-                    end
-                else
-                    if tonumber(actualHour) ~= tonumber(Existing) then
-                        local delFile = pcall(function()
-                            -- delfile("NotSameServers.json")
-                            AllIDs = {}
-                            table.insert(AllIDs, actualHour)
-                        end)
+end
+
+function returnnextmap(a,b)
+    if not b then
+        if not game:GetService("Workspace").__MAP.Cannons:FindFirstChild(getmapnek(a)) then
+            if v1.WorldCmds.Get() ~= "Void" and v1.WorldCmds.Get() ~= "Limbo" and v1.WorldCmds.Get() ~= "Tech" then
+                if getmap(a) == true then
+                    for i,v in pairs(mapList) do
+                        if v == v1.WorldCmds.Get() and getmapnek(a) ~= v1.WorldCmds.Get() then
+                            if mapList[i + 1] ~= "Fantasy" then
+                                return mapList[i + 1]
+                            else
+                                return mapList[i + 2]
+                            end
+                        end
                     end
                 end
-                num = num + 1
+                if getmap(a) == false then
+                    for i,v in pairs(mapList) do
+                        if v == v1.WorldCmds.Get() and getmapnek(a) ~= v1.WorldCmds.Get() then
+                            return mapList[i - 1]
+                        end
+                    end
+                end
+            else
+                return "A"
             end
-            if Possible == true then
-                table.insert(AllIDs, ID)
-                wait()
-                pcall(function()
-					print("monimoni")
-                    writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
-                    wait()
-                    game:GetService("TeleportService"):TeleportToPlaceInstance(PlaceID, ID, game.Players.LocalPlayer)
-                end)
-                wait(4)
-            end
-        end
-    end
-end
-
-function TeleportSHOP()
-    pcall(function()
-        TPReturner()
-        if foundAnything ~= "" then
-            TPReturner()
-        end
-    end)
-end	
-function getcommet()
-    local getcomets = Client.Network.Invoke("Comets: Get Data")
-    for i,v in pairs(getcomets) do
-        if getcomets[i].AreaId ~= "Town" and v1.WorldCmds.HasArea(getcomets[i].AreaId) then
-            return {getcomets[i].CoinId , getcomets[i].AreaId}
-        end
-    end
-    return false
-end
-
-workspace.__THINGS.Orbs.ChildAdded:Connect(function(v)
-    pcall(function()
-        Orbs.Collect(v)
-    end)
-end)
-
-workspace.__THINGS.Lootbags.ChildAdded:Connect(function(v)
-    pcall(function()
-        Lootbags.Collect(v)
-    end)
-end)
-
-getgenv().hasfarm = false
-
-local Save = v1.Save.Get
-local Commas = v1.Functions.Commas
-
-function get(thistype)
-    if game.PlaceId == 10321372166 and string.find(string.lower(thistype), "coins") then
-        return Save().HardcoreCurrency[thistype]
-    else
-        return Save()[thistype]
-    end
-end
--- function sendwebhook(title)
---     pcall(function()
---         local url = getgenv().webhooknek
---         local data = {
---         ["content"] = "Auto Comet",
---         ["embeds"] = {
---             {
---                 ["title"] = "Noti!",
---                 ["description"] = "Username: " .."||".. game.Players.LocalPlayer.Name.. "||".. "\nDiamond You Got: " ..  title,
---                 ["type"] = "rich",
---                 ["color"] = tonumber(0xff8200),
---             }
---         }
---         }
---         local newdata = game:GetService("HttpService"):JSONEncode(data)
-    
---         local headers = {
---         ["content-type"] = "application/json"
---         }
---         request = http_request or request or HttpPost or syn.request
---         local abcdef = {Url = url, Body = newdata, Method = "POST", Headers = headers}
---         request(abcdef)
---     end)
--- end
--- local dbuiquanre = get("Diamonds")
--- local UserInputService = game:GetService("UserInputService")
--- local Initialize = function()
---     RunService:Set3dRenderingEnabled(false)
--- end
--- pcall(Initialize)
-function teleportto2(t)
-    hihi.Teleport(t,true)
-end
-
-function farmcomet()
-    if getcommet() ~= false then
-        if not game:GetService("Workspace")["__THINGS"].Coins:FindFirstChild(getcommet()[1]) then
-            wait(5)
-            teleportto2(getcommet()[2])
         else
-            for i1,v1 in pairs(Client.PetCmds.GetEquipped()) do
-                if getcommet() ~= false then
-                    getgenv().hasfarm = true
-                    Client.Network.Invoke('Join Coin', getcommet()[1], {v1.uid})
-                    Client.Network.Fire('Farm Coin', getcommet()[1], v1.uid)
-                    wait(.2)
-                end
-            end
+            return getmapnek(a)
         end
     else
-        -- if getcommet() == false and getgenv().hasfarm == true and getgenv().webhooknek ~= "" then
-        --     wait(7)
-        --     sendwebhook(tostring(Commas(get("Diamonds") - dbuiquanre)))
-        --     getgenv().hasfarm = false
-        -- end
-        if getcommet() == false and getgenv().hasfarm == true then
-            wait(7)
-            TeleportSHOP()
-        elseif getcommet() == false then
-            TeleportSHOP()
+        if v1.WorldCmds.Get() ~= "Void" and v1.WorldCmds.Get() ~= "Limbo" and v1.WorldCmds.Get() ~= "Tech" then
+            if mapList[i] == v1.WorldCmds.Get() then
+                Default = i
+            end
+            if Default ~= 0 then
+                local up = #mapList - Default
+                local down = #mapList - (#mapList - Default)
+                upne = 0
+                downne = 0
+                for q = 1, up do
+                    upne = upne + 1
+                    if game:GetService("Workspace").__MAP.Cannons:FindFirstChild(mapList[Default + upne]) then
+                        return mapList[Default + upne]
+                    end
+                end
+                for q = 1, down do
+                    downne = downne + 1
+                    if game:GetService("Workspace").__MAP.Cannons:FindFirstChild(mapList[Default - downne]) then
+                        return mapList[Default - downne]
+                    end
+                end
+            end
+        else
+            if v1.WorldCmds.Get() == "Void" then
+                if not game:GetService("Workspace").__MAP.Cannons:FindFirstChild(getmapnek(a)) then
+                    return game:GetService("Workspace").__MAP.Interactive:FindFirstChild("Limbo Portal").CENTER.CFrame
+                end
+            elseif v1.WorldCmds.Get() == "Limbo" then
+                if not game:GetService("Workspace").__MAP.Cannons:FindFirstChild(getmapnek(a)) then
+                    return game:GetService("Workspace").__MAP.Interactive:FindFirstChild("Limbo Portal").CENTER.CFrame
+                end
+            elseif v1.WorldCmds.Get() == "Tech" then
+                if not game:GetService("Workspace").__MAP.Cannons:FindFirstChild(getmapnek(a)) then
+                    return game:GetService("Workspace").__MAP.Interactive["Hacker Portal"]._INTERACT.CFrame
+                end
+            end
         end
     end
 end
 
-spawn(function()
-    while true do wait(1)
-        pcall(farmcomet)
+function teleportnow(b)
+    if getmapnek(b) ~= v1.WorldCmds.Get() then
+        if game:GetService("Workspace").__MAP.Cannons:FindFirstChild(returnnextmap(b)) then
+            return returnnextmap(b)
+        else
+            return returnnextmap(b,true)
+        end
     end
-end)
-getgenv().bulonluon = true
+end
+function click(a)
+    game:GetService("VirtualInputManager"):SendMouseButtonEvent(a.AbsolutePosition.X+a.AbsoluteSize.X/2,a.AbsolutePosition.Y+50,0,true,a,1)
+    game:GetService("VirtualInputManager"):SendMouseButtonEvent(a.AbsolutePosition.X+a.AbsoluteSize.X/2,a.AbsolutePosition.Y+50,0,false,a,1)
+end
+while true do wait()
+    if typeof(teleportnow("Kawaii Tokyo")) ~= "CFrame" then
+        plr.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").__MAP.Cannons[teleportnow("Kawaii Tokyo")].CFrame
+        wait(1)
+        game:GetService("VirtualInputManager"):SendKeyEvent(true, "E", false, game)
+        wait(1)
+        game:GetService("VirtualInputManager"):SendKeyEvent(false, "E", false, game)
+    else
+        plr.Character.HumanoidRootPart.CFrame = teleportnow("Kawaii Tokyo")
+        game:GetService("VirtualInputManager"):SendKeyEvent(true, "E", false, game)
+        wait(1)
+        game:GetService("VirtualInputManager"):SendKeyEvent(false, "E", false, game)
+        wait(1)
+        click(game:GetService("Players").LocalPlayer.PlayerGui.Message.Frame.Yes)
+    end
 end
