@@ -92,7 +92,7 @@ function getcommet()
     local getcomets = Client.Network.Invoke("Comets: Get Data")
     for i,v in pairs(getcomets) do
         if getcomets[i].AreaId ~= "Town" and v1.WorldCmds.HasArea(getcomets[i].AreaId) then
-            return {getcomets[i].CoinId , getcomets[i].AreaId, getcomets[i].SpawnPosition}
+            return {getcomets[i].CoinId , getcomets[i].AreaId, getcomets[i].EndPosition}
         end
     end
     return false
