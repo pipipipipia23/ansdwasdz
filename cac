@@ -324,8 +324,9 @@ function farmcomet()
 end
 
 spawn(function()
-    while true do wait(1)
-        pcall(farmcomet)
+    while true do wait()
+        local a,b = pcall(farmcomet)
+        print(a,b)
     end
 end)
 getgenv().bulonluon = true
