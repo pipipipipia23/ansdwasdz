@@ -14,7 +14,6 @@ local Orbs = getsenv(game.Players.LocalPlayer.PlayerScripts.Scripts.Game.Orbs)
 local Lootbags = getsenv(game.Players.LocalPlayer.PlayerScripts.Scripts.Game.Lootbags)
 debug.setupvalue(Client.Network.Invoke, 1, function() return true end)
 debug.setupvalue(Client.Network.Fire, 1, function() return true end)
-getrenv().require = getgenv().require -- method tvk hihi (iu tvk vcl)
 local hihi = getsenv(game:GetService("Players").LocalPlayer.PlayerScripts.Scripts.GUIs.Teleport)
 local PlaceID = game.PlaceId
 local AllIDs = {}
@@ -101,8 +100,6 @@ function getcommet()
     return false
 end
 
-print(getcommet())
-
 workspace.__THINGS.Orbs.ChildAdded:Connect(function(v)
     pcall(function()
         Orbs.Collect(v)
@@ -157,6 +154,7 @@ end
 --     RunService:Set3dRenderingEnabled(false)
 -- end
 -- pcall(Initialize)
+--
 local mapList = {}
 local getmaptp = game:GetService("Players").LocalPlayer.PlayerGui.Teleport.Frame.LeftContainer.Holder
 for i,v in pairs(getmaptp:GetChildren()) do
@@ -270,8 +268,6 @@ function teleportnow(b)
         else
             return returnnextmap(b,true)
         end
-    else
-        return false
     end
 end
 function click(a)
@@ -280,7 +276,7 @@ function click(a)
 end
 
 function nekkkkkkk(c)
-    if typeof(teleportnow(c)) ~= "CFrame" and teleportnow(c) ~= false then
+    if typeof(teleportnow(c)) ~= "CFrame" then
         plr.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").__MAP.Cannons[teleportnow(c)].CFrame
         wait(1)
         game:GetService("VirtualInputManager"):SendKeyEvent(true, "E", false, game)
@@ -295,6 +291,7 @@ function nekkkkkkk(c)
         click(game:GetService("Players").LocalPlayer.PlayerGui.Message.Frame.Yes)
     end
 end
+--
 
 function farmcomet()
     if getcommet() ~= false then
