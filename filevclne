@@ -30,6 +30,7 @@ game:GetService("Players").LocalPlayer.Idled:connect(function()
 end)
 --- Setup Env
 local indungeon = (game.PlaceId ~= 87039211657390) and true or false
+local enemiesblockdungeon = {}
 getgenv().MaxDPS = 0
 getgenv().Dungeon = indungeon
 getgenv().variables = {}
@@ -301,8 +302,7 @@ function getEnemiesDungeon()
     local hp = math.huge
     for _, enemy in pairs(Services.CollectionService:GetTagged("EnemyServer")) do
         local attrs = enemy:GetAttributes()
-        local enemies = getValue("blockenemies") or ""
-        if enemy.Name ~= enemies and attrs.HP < hp then
+        if table.find(enemiesblockdungeon, v.Name) == false and attrs.HP < hp then
             hp = attrs.HP
             chosenEnemy = enemy
         end
@@ -372,6 +372,8 @@ function fullyAttack(Enemies)
         setValue("blockenemies", Enemies.Name)
         if not indungeon then
             equipMaxPet()
+        else
+            table.insert(enemiesblockdungeon, Enemies.Name)
         end
         print("Concak")
     end
