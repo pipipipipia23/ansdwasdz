@@ -382,6 +382,7 @@ function AutoFarm()
         else
             fullyAttack(Enemies[1])
         end
+        task.wait(2)
     else
         if indungeon then
             fullyAttack(getEnemiesDungeon()[1])
@@ -533,7 +534,7 @@ end)
 
 -- Loop
 
-while true do task.wait(2)
+while true do task.wait(.1)
     local a,b = pcall(AutoFarm)
     print(a,b)
 end
