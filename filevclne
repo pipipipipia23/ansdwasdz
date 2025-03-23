@@ -113,7 +113,7 @@ function tweenfarm(CFramepos)
 	local Tween = game:GetService('TweenService'):Create(
 		game.Players.LocalPlayer.Character.HumanoidRootPart,
 		TweenInfo.new(
-			gay / 1500, 
+			gay / 700, 
 			Enum.EasingStyle.Linear
 		),
 		{CFrame = CFramepos * CFrame.new(2,0,0)}
