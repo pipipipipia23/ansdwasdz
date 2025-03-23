@@ -299,7 +299,9 @@ end
 function getEnemiesDungeon()
     local chosenEnemy = nil
     for _, enemy in pairs(Services.CollectionService:GetTagged("EnemyServer")) do
-        chosenEnemy = enemy
+        if enemy.Name ~= getValue("blockenemies") then
+            chosenEnemy = enemy
+        end
     end
     return {chosenEnemy, "CAC"}
 end
@@ -362,7 +364,8 @@ function fullyAttack(Enemies)
                 Enemy = enemy
             });    
             time = time + 1
-        until time > 3
+        until time > 5
+        setValue("blockenemies", Enemies.Name)
         if not indungeon then
             equipMaxPet()
         end
