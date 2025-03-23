@@ -222,7 +222,7 @@ function step2check(nameMaxEnemies)
         return true
     end
 
-    if hasDifferentHighRankPets then
+    if hasDifferentHighRankPets and allMaxed then
         return firstPetName -- nên thống nhất pet
     elseif sameRankPetCount >= 4 and allMaxed then
         return betterboss(firstPetName)
