@@ -311,7 +311,7 @@ function getEnemiesDungeon()
     local hp = math.huge
     for _, enemy in pairs(Services.CollectionService:GetTagged("EnemyServer")) do
         local attrs = enemy:GetAttributes()
-        if table.find(enemiesblockdungeon, v.Name) == nil and attrs.HP < hp then
+        if table.find(enemiesblockdungeon, enemy.Name) == nil and attrs.HP < hp then
             hp = attrs.HP
             chosenEnemy = enemy
         end
