@@ -362,13 +362,13 @@ function fullyAttack(Enemies)
             setValue("EnemiesId", Enemies.Name)
         until PetIsAttackingGetId() ~= Enemies.Name or not getgenv().Dungeon
         local time = 0
-        repeat wait(.1)
+        repeat wait(.5)
             EnemiNetwork:Fire({
                 Event = "EnemyCapture", 
                 Enemy = enemy
             });    
             time = time + 1
-        until time > 5
+        until time > 3
         setValue("blockenemies", Enemies.Name)
         if not indungeon then
             equipMaxPet()
