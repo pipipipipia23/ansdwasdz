@@ -53,6 +53,15 @@ end
 
 task.spawn(function()
     while true do
+        local tickn = tick()
+        repeat wait()
+        until tick() - tickn >= 10
+        enemiesblockdungeon = {}
+    end
+end)
+
+task.spawn(function()
+    while true do
         task.wait(0.5)
         for name, data in pairs(getgenv().variables) do
             if os.clock() - data.lastUpdate > 5 then
