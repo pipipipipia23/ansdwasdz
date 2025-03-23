@@ -350,13 +350,13 @@ function fullyAttack(Enemies)
                 goPet.PetPos[v] = Enemies.Position
             end
             PetNetwork:Fire(goPet);
-            task.wait(1)
+            task.wait(.5)
         end
-        repeat task.wait(1)
+        repeat task.wait(.5)
             setValue("EnemiesId", Enemies.Name)
         until PetIsAttackingGetId() ~= Enemies.Name or not getgenv().Dungeon
         local time = 0
-        repeat wait(.5)
+        repeat wait(.1)
             EnemiNetwork:Fire({
                 Event = "EnemyCapture", 
                 Enemy = enemy
