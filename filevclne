@@ -299,7 +299,8 @@ end
 function getEnemiesDungeon()
     local chosenEnemy = nil
     for _, enemy in pairs(Services.CollectionService:GetTagged("EnemyServer")) do
-        if enemy.Name ~= getValue("blockenemies") then
+        local enemies = getValue("blockenemies") or ""
+        if enemy.Name ~= enemies then
             chosenEnemy = enemy
         end
     end
