@@ -469,7 +469,7 @@ function equipMaxPet()
     v50 = {}
 
     for i,v in pairs(listpet) do
-        if table.find(v40, v.Name) == nil then
+        if table.find(v40, v.Name) == nil and i > 7 then
             table.insert(v50, v.Name)
         end
     end
