@@ -89,9 +89,25 @@ local dataDungeon = {
     ["BC"] = 1000000000000,
 }
 
+local codedata = {
+    "RUNES",
+    "DRAGONBLUE",
+    "UPDATE",
+    "BETA"
+}
+
 -- 1 trieu danh dungeon map 1
 -- 150m danh dungeon map 2
 -- dame 11 so thi nen len SS (rank 6 la S con SS la 7)
+
+--- redeem code
+for i,v in pairs(codedata) do
+    GenerealNetwork:Fire({
+        Event = "UseCode", 
+        Code = v
+    });
+end
+---
 
 --- Tween
 function noclip()
@@ -487,6 +503,27 @@ end
 
 ---
 
+function autoBuySlot()
+    local attrs = plr.leaderstats.Passes:GetAttributes()
+    if attrs.ExtraEquip == false then
+        GenerealNetwork.Fire({
+            ["Type"] = "Pass",
+            ["Event"] = "TicketShop",
+            ["Name"] = "ExtraEquip"
+        })
+    else
+        for i,v in pairs(attrs) do
+            if v == false then
+                GenerealNetwork.Fire({
+                    ["Type"] = "Pass",
+                    ["Event"] = "TicketShop",
+                    ["Name"] = i
+                })
+            end
+        end
+    end
+end
+
 function updateDps()
     getgenv().MaxDPS = 0
     for i,v in pairs(GetListPet()) do
@@ -503,6 +540,7 @@ end
 task.spawn(function()
     while true do task.wait()
         pcall(updateDps)
+        pcall(autoBuySlot)
     end
 end)
 --
