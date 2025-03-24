@@ -547,7 +547,7 @@ local function waitUntilNextNotification()
     print("Chờ", nextTime - currentTime, "giây để đến mốc thông báo tiếp theo.")
     task.wait(nextTime - currentTime)
 end
-
+equipMaxPet()
 task.spawn(function()
     while true do task.wait(1)
         if getgenv().Dungeon == true then
