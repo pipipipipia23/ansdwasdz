@@ -240,11 +240,11 @@ function step2check(nameMaxEnemies)
 
     if hasDifferentHighRankPets and allMaxed then
         return firstPetName -- nên thống nhất pet
-    elseif sameRankPetCount >= 4 and allMaxed then
+    elseif sameRankPetCount >= ExtraFunction.GetMaxPets(plr) and allMaxed then
         return betterboss(firstPetName)
     end
 
-    if sameNamePetCount >= 4 then
+    if sameNamePetCount >= ExtraFunction.GetMaxPets(plr) then
         return true -- đã đủ pet giống nhau
     end
 
@@ -462,7 +462,7 @@ function equipMaxPet()
     end)
 
     local v40 = {};
-    for i = 1, math.min(4, #listpet) do
+    for i = 1, math.min(ExtraFunction.GetMaxPets(plr), #listpet) do
         table.insert(v40, listpet[i].Name);
     end
 
