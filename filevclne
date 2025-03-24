@@ -1,4 +1,3 @@
-wait(2)
 repeat wait() until game:IsLoaded()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Hiepphamone/lowmap/main/lowmap"))()
 local Services = setmetatable({}, {
@@ -518,6 +517,11 @@ function FunctionDungeon() -- dit con me decomplie deo work nhe con me may
                 wait(5)
                 print("Tween di ne")
                 if Workspace.__Main.__Dungeon:FindFirstChild("Dungeon") then
+                    GenerealNetwork:Fire({
+                        Event = "DungeonAction", 
+                        Action = "BuyTicket", 
+                        Type = "Gems"
+                    })
                     GenerealNetwork:Fire({
                         Event = "DungeonAction",
                         Action = "Create"
