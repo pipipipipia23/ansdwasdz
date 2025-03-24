@@ -1,4 +1,4 @@
-wait(5)
+wait(2)
 repeat wait() until game:IsLoaded()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Hiepphamone/lowmap/main/lowmap"))()
 local Services = setmetatable({}, {
@@ -32,6 +32,7 @@ end)
 --- Setup Env
 local indungeon = (game.PlaceId ~= 87039211657390) and true or false
 local enemiesblockdungeon = {}
+local fullRank6 = nil
 getgenv().MaxDPS = 0
 getgenv().Dungeon = indungeon
 getgenv().variables = {}
@@ -82,15 +83,16 @@ local dataMap = {
 }
 
 local dataDungeon = {
-    ["SL"] = 1000000,
-    ["NR"] = 100000000,
-    ["OP"] = 10000000000,
-    ["BL"] = 100000000000,
-    ["JJ"] = 1000000000000,
+    ["SL"] = 1500000,
+    ["NR"] = 150000000,
+    ["OP"] = 15000000000,
+    ["BL"] = 150000000000,
+    ["JJ"] = 1500000000000,
 }
 
 -- 1 trieu danh dungeon map 1
 -- 150m danh dungeon map 2
+-- dame 11 so thi nen len SS (rank 6 la S con SS la 7)
 
 --- Tween
 function noclip()
@@ -186,7 +188,7 @@ function step2check(nameMaxEnemies)
     local firstPetName = nil
     local rank3 = false
     local rank5 = false
-
+    fullRank6 = true
     local listpet = GetListPet()
 
     for _, v in pairs(listpet) do
@@ -195,6 +197,10 @@ function step2check(nameMaxEnemies)
 
         if attrs.Level < maxLevel then
             allMaxed = false
+        end
+
+        if attrs.Rank < 6 then
+            fullRank6 = false
         end
 
         if attrs.Rank >= 2 then
@@ -373,10 +379,17 @@ function fullyAttack(Enemies)
         until PetIsAttackingGetId() ~= Enemies.Name or not getgenv().Dungeon
         local time = 0
         repeat wait(.5)
-            EnemiNetwork:Fire({
-                Event = "EnemyCapture", 
-                Enemy = enemy
-            });    
+            if fullRank6 and not indungeon then
+                EnemiNetwork:Fire({
+                    Event = "EnemyDestroy", 
+                    Enemy = enemy
+                });
+            else
+                EnemiNetwork:Fire({
+                    Event = "EnemyCapture", 
+                    Enemy = enemy
+                });    
+            end
             time = time + 1
         until time > 3
         setValue("blockenemies", Enemies.Name)
