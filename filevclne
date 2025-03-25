@@ -97,36 +97,36 @@ local dataDungeon = {
 settings().Rendering.QualityLevel = Enum.QualityLevel.Level01
 UserSettings().GameSettings.MasterVolume = 0
 UserSettings().GameSettings.SavedQualityLevel = Enum.SavedQualitySetting.QualityLevel1
-pcall(function() 
-    for i,v in getrunningscripts() do
-        local a,b =pcall(function() 
-            v.Disabled = true
-        end) 
-        if a ~= false then
-            v.Disabled = true
-        end
-    end
-end)
-pcall(function()
-    workspace.__Extra:Destroy()
-end)
-pcall(function() 
-    plr.PlayerScripts.Scripts:Destroy()
-end)
-for k,v in plr.PlayerGui:GetChildren() do 
-    v:Destroy()
-end
-pcall(function() 
-    for k,v in game:GetDescendants() do 
-        if v:IsA("RemoteEvent") then 
-            pcall(function() 
-                for k,v in getconnections(v.OnClientEvent) do 
-                    if getfenv(v.Function).script ~= script then v:Disable() end
-                end
-            end)
-        end
-    end
-end)
+-- pcall(function() 
+--     for i,v in getrunningscripts() do
+--         local a,b =pcall(function() 
+--             v.Disabled = true
+--         end) 
+--         if a ~= false then
+--             v.Disabled = true
+--         end
+--     end
+-- end)
+-- pcall(function()
+--     workspace.__Extra:Destroy()
+-- end)
+-- pcall(function() 
+--     plr.PlayerScripts.Scripts:Destroy()
+-- end)
+-- for k,v in plr.PlayerGui:GetChildren() do 
+--     v:Destroy()
+-- end
+-- pcall(function() 
+--     for k,v in game:GetDescendants() do 
+--         if v:IsA("RemoteEvent") then 
+--             pcall(function() 
+--                 for k,v in getconnections(v.OnClientEvent) do 
+--                     if getfenv(v.Function).script ~= script then v:Disable() end
+--                 end
+--             end)
+--         end
+--     end
+-- end)
 --
 
 local codedata = { "RUNES", "DRAGONBLUE", "UPDATE" }
