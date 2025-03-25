@@ -93,7 +93,6 @@ local codedata = {
     "RUNES",
     "DRAGONBLUE",
     "UPDATE",
-    "BETA"
 }
 
 -- 1 trieu danh dungeon map 1
@@ -106,6 +105,7 @@ for i,v in pairs(codedata) do
         Event = "UseCode", 
         Code = v
     });
+    wait(1)
 end
 ---
 
@@ -585,7 +585,19 @@ local function waitUntilNextNotification()
     print("Chờ", nextTime - currentTime, "giây để đến mốc thông báo tiếp theo.")
     task.wait(nextTime - currentTime)
 end
+
+local function waitUntilNextNotification2()
+    local currentTime = os.time()
+    local notificationInterval = 2160 -- 36 phút
+    local nextTime = math.ceil(currentTime / notificationInterval) * notificationInterval
+
+    print("Chờ", nextTime - currentTime, "giây để đến mốc thông báo tiếp theo.")
+    task.wait(nextTime - currentTime)
+end
+
+
 equipMaxPet()
+
 task.spawn(function()
     while true do task.wait(1)
         if getgenv().Dungeon == true then
