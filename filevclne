@@ -237,10 +237,6 @@ function step2check(nameMaxEnemies)
             end
         end
 
-        if sameRankPetCount == 0 then
-            fullRank6 = false
-        end
-
         if attrs.Name == nameMaxEnemies and attrs.Rank >= 2 then
             sameNamePetCount = sameNamePetCount + 1
         end
@@ -248,6 +244,10 @@ function step2check(nameMaxEnemies)
         if attrs.Rank >= 2 then
             sameRankPetCount = sameRankPetCount + 1
         end
+    end
+
+    if firstPetName == nil then
+        fullRank6 = false
     end
 
     if rank5 then
@@ -408,6 +408,7 @@ function fullyAttack(Enemies)
                     Enemy = enemy
                 });
             else
+                print(fullRank6, indungeon)
                 EnemiNetwork:Fire({
                     Event = "EnemyCapture", 
                     Enemy = enemy
