@@ -1,5 +1,5 @@
 getgenv().config = {
-    buygamepass = false
+    buygamepass = false,
     buyonlyslot = true
 }
 
