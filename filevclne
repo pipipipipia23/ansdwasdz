@@ -302,7 +302,7 @@ function getEnemies2()
     elseif betterName == true or not bestEnemy then
         print("Better?")
         -- Tìm enemy thường mạnh nhất phù hợp DPS
-        bestHP = 0 -- reset HP để tìm lại
+        bestHP = 0
         for enemyId, enemyInfo in pairs(EnemiesInfo) do
             for i,v in pairs(dataMap) do
                 if string.find(enemyId, i) and enemyInfo.HP <= maxDPSLimit and enemyInfo.HP > bestHP then
@@ -314,7 +314,6 @@ function getEnemies2()
         end
     end
 
-    -- Chọn enemy cụ thể đã spawn trên server
     local chosenEnemy = nil
     for _, enemy in pairs(Services.CollectionService:GetTagged("EnemyServer")) do
         local attrs = enemy:GetAttributes()
@@ -506,7 +505,8 @@ end
 function autoBuySlot()
     local attrs = plr.leaderstats.Passes:GetAttributes()
     if attrs.ExtraEquip == false then
-        GenerealNetwork.Fire({
+        print("BUYYYYYY")
+        GenerealNetwork:Fire({
             ["Type"] = "Pass",
             ["Event"] = "TicketShop",
             ["Name"] = "ExtraEquip"
@@ -514,7 +514,7 @@ function autoBuySlot()
     else
         for i,v in pairs(attrs) do
             if v == false then
-                GenerealNetwork.Fire({
+                GenerealNetwork:Fire({
                     ["Type"] = "Pass",
                     ["Event"] = "TicketShop",
                     ["Name"] = i
@@ -535,12 +535,12 @@ function updateDps()
     getgenv().MaxDPS = getgenv().MaxDPS * 3
     print(getgenv().MaxDPS)
     task.wait(10)
+    autoBuySlot()
 end
 
 task.spawn(function()
     while true do task.wait()
         pcall(updateDps)
-        pcall(autoBuySlot)
     end
 end)
 --
