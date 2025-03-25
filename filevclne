@@ -1,3 +1,8 @@
+getgenv().config = {
+    buygamepass = false
+    buyonlyslot = true
+}
+
 repeat wait() until game:IsLoaded()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Hiepphamone/lowmap/main/lowmap"))()
 local Services = setmetatable({}, {
@@ -230,6 +235,10 @@ function step2check(nameMaxEnemies)
             elseif attrs.Name ~= firstPetName then
                 hasDifferentHighRankPets = true
             end
+        end
+
+        if sameRankPetCount == 0 then
+            fullRank6 = false
         end
 
         if attrs.Name == nameMaxEnemies and attrs.Rank >= 2 then
@@ -504,7 +513,7 @@ end
 
 function autoBuySlot()
     local attrs = plr.leaderstats.Passes:GetAttributes()
-    if attrs.ExtraEquip == false then
+    if attrs.ExtraEquip == false and (getgenv().config.buygamepass or getgenv().config.buyonlyslot) then
         print("BUYYYYYY")
         GenerealNetwork:Fire({
             ["Type"] = "Pass",
@@ -512,13 +521,15 @@ function autoBuySlot()
             ["Name"] = "ExtraEquip"
         })
     else
-        for i,v in pairs(attrs) do
-            if v == false then
-                GenerealNetwork:Fire({
-                    ["Type"] = "Pass",
-                    ["Event"] = "TicketShop",
-                    ["Name"] = i
-                })
+        if getgenv().config.buygamepass then
+            for i,v in pairs(attrs) do
+                if v == false then
+                    GenerealNetwork:Fire({
+                        ["Type"] = "Pass",
+                        ["Event"] = "TicketShop",
+                        ["Name"] = i
+                    })
+                end
             end
         end
     end
