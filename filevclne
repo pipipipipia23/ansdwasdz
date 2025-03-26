@@ -40,6 +40,7 @@ end)
 local indungeon = (game.PlaceId ~= 87039211657390) and true or false
 local enemiesblockdungeon = {}
 local fullRank6 = nil
+local haspet = false
 getgenv().MaxDPS = 0
 getgenv().Dungeon = indungeon
 getgenv().variables = {}
@@ -234,6 +235,7 @@ function step2check(nameMaxEnemies)
     local listpet = GetListPet()
 
     for _, v in pairs(listpet) do
+        haspet = true
         local attrs = plr.leaderstats.Inventory.Pets[v]:GetAttributes()
         local maxLevel = 50 + 25 * attrs.Rank
 
@@ -395,7 +397,7 @@ function Attack()
 end
 
 task.spawn(function()
-    while true do task.wait()
+    while haspet == false do task.wait(.2)
         pcall(Attack)
     end
 end)
@@ -654,7 +656,7 @@ end)
 
 -- Loop
 
-while true do task.wait(.1)
+while true do task.wait(.3)
     local a,b = pcall(AutoFarm)
     print(a,b)
 end
