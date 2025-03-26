@@ -454,7 +454,7 @@ function getEnemiesDungeon()
     local hp = math.huge
     for _, enemy in pairs(Services.CollectionService:GetTagged("EnemyServer")) do
         local attrs = enemy:GetAttributes()
-        if table.find(enemiesblockdungeon, enemy.Name) == nil and attrs.HP < hp then
+        if table.find(enemiesblockdungeon, enemy.Name) == nil and attrs.HP < hp and attrs.HP > 0 then
             hp = attrs.HP
             chosenEnemy = enemy
         end
@@ -514,22 +514,6 @@ function fullyAttack(Enemies)
         repeat task.wait(.5)
             setValue("EnemiesId", Enemies.Name)
         until PetIsAttackingGetId() ~= Enemies.Name or not getgenv().Dungeon
-        local time = 0
-        repeat wait(.5)
-            if fullRank6 and not indungeon then
-                EnemiNetwork:Fire({
-                    Event = "EnemyDestroy", 
-                    Enemy = enemy
-                });
-            else
-                print(fullRank6, indungeon)
-                EnemiNetwork:Fire({
-                    Event = "EnemyCapture", 
-                    Enemy = enemy
-                });    
-            end
-            time = time + 1
-        until time > 3
         setValue("blockenemies", Enemies.Name)
         if not indungeon then
             equipMaxPet()
