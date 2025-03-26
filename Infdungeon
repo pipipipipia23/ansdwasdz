@@ -1,0 +1,765 @@
+getgenv().config = {
+    buygamepass = false,
+    buyonlyslot = true
+}
+
+repeat wait() until game:IsLoaded()
+
+loadstring(game:HttpGet("https://raw.githubusercontent.com/pipipipipia23/ansdwasdz/refs/heads/main/quanhlow"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/cuongdevv/trackstat/refs/heads/main/AC_Track.lua"))()
+
+local Services = setmetatable({}, {
+    __index = function(_, Name)
+        return cloneref(game:GetService(Name))
+    end
+})
+
+local plr = Services.Players.LocalPlayer
+local Storage = Services.ReplicatedStorage
+local Network = require(Storage.BridgeNet2)
+local Workspace = Services.Workspace
+local EnemiesInfo = require(Storage.Indexer.EnemyInfo)
+local PetsInfo = require(Storage.Indexer.PetsInfo)
+local BalalnceInfo = require(Storage.Indexer.BalanceInfo)
+---
+local EnemiNetwork = Network.ReferenceBridge("ENEMY_EVENT")
+local PetNetwork = Network.ReferenceBridge("PET_EVENT")
+local GenerealNetwork = Network.ReferenceBridge("GENERAL_EVENT")
+---
+local PetService = require(Storage.SharedModules.PetsService)
+local ExtraFunction = require(Storage.SharedModules.ExtraFunctions)
+local DPSService = require(Storage.SharedModules.Others.SimpleDps)
+-- Anti afk
+local vu = game:GetService("VirtualUser")
+game:GetService("Players").LocalPlayer.Idled:connect(function()
+    vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+    task.wait(1)
+    vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+end)
+--- Setup Env
+local indungeon = (game.PlaceId ~= 87039211657390) and true or false
+local enemiesblockdungeon = {}
+local fullRank6 = nil
+local haspet = false
+getgenv().MaxDPS = 0
+getgenv().Dungeon = indungeon
+getgenv().variables = {}
+
+function setValue(name, value)
+    getgenv().variables[name] = {
+        value = value,
+        lastUpdate = os.clock()
+    }
+    return value
+end
+
+function getValue(name)
+    local data = getgenv().variables[name]
+    if data then
+        return data.value
+    end
+    return nil
+end
+
+task.spawn(function()
+    while true do
+        local tickn = tick()
+        repeat wait()
+        until tick() - tickn >= 10
+        enemiesblockdungeon = {}
+    end
+end)
+
+task.spawn(function()
+    while true do
+        task.wait(0.5)
+        for name, data in pairs(getgenv().variables) do
+            if os.clock() - data.lastUpdate > 5 then
+                getgenv().variables[name] = nil
+            end
+        end
+    end
+end)
+
+--- Setup data
+local dataMap = {
+    ["SL"] = CFrame.new(427.553406, 30.6269054, -65.1011963, -0.99999696, -5.96046448E-8, -8.68916806E-15, -1.7301765E-16, -2.84217094E-14, 0.999999642, -5.96046448E-8, 0.99999696, -3.05652788E-14),
+    ["NR"] = CFrame.new(-3373.20581, 32.9240837, 2247.19141, -1, 0, 0, 0, 0, 1, 0, 1, 0),
+    ["OP"] = CFrame.new(-3370.85718, 60.8806458, -2614.34473, -0.619890034, 0.783485055, -0.0434471369, 0.111987881, 0.143134549, 0.983346999, 0.776656389, 0.6047014, -0.176468492),
+    ["BL"] = CFrame.new(2918.01733, 49.091114, -2381.21753, -0.780959368, -0.624583125, 0, 0, 0, 1, -0.624582827, 0.780959666, 0),
+    ["BC"] = CFrame.new(135.43426513671875, 38.389495849609375, 4403.4580078125),
+}
+
+local dataDungeon = {
+    ["SL"] = 1500000,
+    ["NR"] = 150000000,
+    ["OP"] = 15000000000,
+    ["BL"] = 100000000000,
+    ["BC"] = 1000000000000,
+}
+
+--- lowest
+settings().Rendering.QualityLevel = Enum.QualityLevel.Level01
+UserSettings().GameSettings.MasterVolume = 0
+UserSettings().GameSettings.SavedQualityLevel = Enum.SavedQualitySetting.QualityLevel1
+pcall(function() 
+    for i,v in getrunningscripts() do
+        local a,b =pcall(function() 
+            v.Disabled = true
+        end) 
+        if a ~= false then
+            v.Disabled = true
+        end
+    end
+end)
+pcall(function()
+    workspace.__Extra:Destroy()
+end)
+for k,v in plr.PlayerGui:GetChildren() do 
+    v:Destroy()
+end
+---
+
+--- UI FUNC
+-- function createche()
+--     local ScreenGui = Instance.new("ScreenGui")
+--     local Frame = Instance.new("Frame")
+--     local TextLabel = Instance.new("TextLabel")
+--     local TextLabel_2 = Instance.new("TextLabel")
+--     local TextLabel_3 = Instance.new("TextLabel")
+--     local TextLabel_4 = Instance.new("TextLabel")
+--     --Properties:
+
+--     getgenv().nameche = tostring(math.random())
+
+--     ScreenGui.Parent = game.CoreGui
+--     ScreenGui.Name = getgenv().nameche
+--     ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+--     Frame.Parent = ScreenGui
+--     Frame.BackgroundColor3 = Color3.fromRGB(41, 138, 191)
+--     Frame.BorderSizePixel = 10
+--     Frame.ZIndex = 100
+--     Frame.Position = UDim2.new(0.0730253309, 0, 0.0599755198, 0)
+--     Frame.Size = UDim2.new(1e+10, 100000, 10000000, 1000817)
+
+--     TextLabel.Parent = Frame
+--     TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+--     TextLabel.BackgroundTransparency = 1.000
+--     TextLabel.Position = UDim2.new(4.50819694e-11, 0, 4.41806343e-08, 0)
+--     TextLabel.Size = UDim2.new(0, 200, 0, 50)
+--     TextLabel.Font = Enum.Font.SourceSansSemibold
+--     TextLabel.Text = "Arise"
+--     TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+--     TextLabel.TextSize = 70.000
+--     TextLabel.TextStrokeColor3 = Color3.fromRGB(255, 255, 255)
+
+--     TextLabel_2.Parent = Frame
+--     TextLabel_2.Name = "DPS"
+--     TextLabel_2.BackgroundColor3 = Color3.fromRGB(41, 138, 191)
+--     TextLabel_2.BackgroundTransparency = 1.000
+--     TextLabel_2.Position = UDim2.new(4.50464388e-11, 0, 5.25027488e-08, 0)
+--     TextLabel_2.Size = UDim2.new(0, 200, 0, 50)
+--     TextLabel_2.Font = Enum.Font.SourceSansSemibold
+--     TextLabel_2.Text = "0"
+--     TextLabel_2.TextColor3 = Color3.fromRGB(255, 255, 255)
+--     TextLabel_2.TextSize = 46.000
+
+--     TextLabel_3.Parent = Frame
+--     TextLabel_3.Name = "Money"
+--     TextLabel_3.BackgroundColor3 = Color3.fromRGB(41, 138, 191)
+--     TextLabel_3.BackgroundTransparency = 1.000
+--     TextLabel_3.Position = UDim2.new(4.50464388e-11, 0, 6.25027488e-08, 0)
+--     TextLabel_3.Size = UDim2.new(0, 200, 0, 50)
+--     TextLabel_3.Font = Enum.Font.SourceSansSemibold
+--     TextLabel_3.Text = "0"
+--     TextLabel_3.TextColor3 = Color3.fromRGB(255, 255, 255)
+--     TextLabel_3.TextSize = 46.000
+    
+--     TextLabel_4.Parent = Frame
+--     TextLabel_4.Name = "Attacking"
+--     TextLabel_4.BackgroundColor3 = Color3.fromRGB(41, 138, 191)
+--     TextLabel_4.BackgroundTransparency = 1.000
+--     TextLabel_4.Position = UDim2.new(4.50464388e-11, 0, 7.25027488e-08, 0)
+--     TextLabel_4.Size = UDim2.new(0, 200, 0, 50)
+--     TextLabel_4.Font = Enum.Font.SourceSansSemibold
+--     TextLabel_4.Text = "None"
+--     TextLabel_4.TextColor3 = Color3.fromRGB(255, 255, 255)
+--     TextLabel_4.TextSize = 46.000
+--     game:GetService("CoreGui")[getgenv().nameche].Frame.Visible = false
+--     game:GetService("CoreGui")[getgenv().nameche].Frame.Visible = false
+-- end    
+
+-- createche()
+
+-- function checkingstatus(Text,Time)
+--     game:GetService("CoreGui")[getgenv().nameche].Frame.Visible = true
+--     game:GetService("CoreGui")[getgenv().nameche].Frame.DPS.Text = Text
+--     game:GetService("CoreGui")[getgenv().nameche].Frame.Money.Text = Time
+-- end
+-- function checkingstatus2(AttackEnemies)
+--     game:GetService("CoreGui")[getgenv().nameche].Frame.Attacking.Text = AttackEnemies
+-- end
+
+-- function closeche()
+--     game:GetService("CoreGui")[getgenv().nameche].Frame.Visible = false
+-- end
+---
+
+local codedata = {
+    "RUNES",
+    "DRAGONBLUE",
+    "UPDATE",
+}
+
+-- 1 trieu danh dungeon map 1
+-- 150m danh dungeon map 2
+-- dame 11 so thi nen len SS (rank 6 la S con SS la 7)
+
+--- redeem code
+for i,v in pairs(codedata) do
+    GenerealNetwork:Fire({
+        Event = "UseCode", 
+        Code = v
+    });
+    wait(1)
+end
+---
+
+--- Tween
+function noclip()
+	if not game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("BodyClip") then
+		local Noclip = Instance.new("BodyVelocity")
+		Noclip.Name = "BodyClip"
+		Noclip.Parent = game.Players.LocalPlayer.Character.HumanoidRootPart
+		Noclip.MaxForce = Vector3.new(100000,100000,100000)
+		Noclip.Velocity = Vector3.new(0,0,0)
+	 end
+end
+
+function tween(CFramepos)
+    noclip()
+	local gay = (CFramepos.Position-game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+	local Tween = game:GetService('TweenService'):Create(
+		game.Players.LocalPlayer.Character.HumanoidRootPart,
+		TweenInfo.new(
+			gay / 400, 
+			Enum.EasingStyle.Linear
+		),
+		{CFrame = CFramepos * CFrame.new(2,0,0)}
+	)
+	Tween:Play()
+    Tween.Completed:Wait()
+end 
+
+function tweenfarm(CFramepos)
+    noclip()
+	local gay = (CFramepos.Position-game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+	local Tween = game:GetService('TweenService'):Create(
+		game.Players.LocalPlayer.Character.HumanoidRootPart,
+		TweenInfo.new(
+			gay / 700, 
+			Enum.EasingStyle.Linear
+		),
+		{CFrame = CFramepos * CFrame.new(2,0,0)}
+	)
+	Tween:Play()
+end 
+---
+
+function getEnemies(status) 
+    local hp = 0
+    local enemies = nil
+    for i,v in pairs(Services.CollectionService:GetTagged("EnemyServer")) do
+        if not status then
+            if hp < v:GetAttributes().HP then
+                hp = v:GetAttributes().HP
+                enemies = v
+            end
+        else
+            if hp < v:GetAttributes().MaxHP and getgenv().MaxDPS * 150 > v:GetAttributes().MaxHP then
+                hp = v:GetAttributes().MaxHP
+                enemies = v
+            end
+        end
+    end
+    return enemies
+end
+
+function betterboss(firstName)
+    local base_hp = nil
+    local next_boss_hp = math.huge
+    local next_boss_name = nil
+
+    -- Tìm HP của boss đầu tiên
+    for _, v in pairs(EnemiesInfo) do
+        if v.TypeG == "BrutesDefeated" and v.Arise == firstName then
+            base_hp = v.HP
+            break -- thoát ngay sau khi tìm được
+        end
+    end
+
+    if not base_hp then return nil end -- không tìm thấy firstName
+
+    -- Tìm boss gần nhất có HP cao hơn base_hp
+    for _, v in pairs(EnemiesInfo) do
+        if v.TypeG == "BrutesDefeated" and v.HP > base_hp and v.HP < next_boss_hp then
+            next_boss_hp = v.HP
+            next_boss_name = v.Arise
+        end
+    end
+
+    return next_boss_name -- trả về boss mạnh kế tiếp hoặc nil nếu không có
+end
+
+function step2check(nameMaxEnemies)
+    local sameRankPetCount = 0
+    local sameNamePetCount = 0
+    local hasDifferentHighRankPets = false
+    local allMaxed = true
+    local firstPetName = nil
+    local rank3 = false
+    local rank5 = false
+    fullRank6 = true
+    local listpet = GetListPet()
+
+    for _, v in pairs(listpet) do
+        haspet = true
+        local attrs = plr.leaderstats.Inventory.Pets[v]:GetAttributes()
+        local maxLevel = 50 + 25 * attrs.Rank
+
+        if attrs.Level < maxLevel then
+            allMaxed = false
+        end
+
+        if attrs.Rank < 6 then
+            fullRank6 = false
+        end
+
+        if attrs.Rank >= 2 then
+            if attrs.Rank >= 3 then
+                rank3 = true
+            end
+            if not firstPetName then
+                firstPetName = attrs.Name
+                if attrs.Rank >= 5 then
+                    rank5 = true
+                end
+            elseif attrs.Name ~= firstPetName then
+                hasDifferentHighRankPets = true
+            end
+        end
+
+        if attrs.Name == nameMaxEnemies and attrs.Rank >= 2 then
+            sameNamePetCount = sameNamePetCount + 1
+        end
+
+        if attrs.Rank >= 2 then
+            sameRankPetCount = sameRankPetCount + 1
+        end
+    end
+
+    if firstPetName == nil then
+        fullRank6 = false
+    end
+
+    if rank5 then
+        return true
+    end
+
+    if rank3 == true and allMaxed then
+        return betterboss(firstPetName)
+    end
+
+    if hasDifferentHighRankPets == false and not allMaxed then
+        print("Inhere")
+        return true
+    end
+
+    if hasDifferentHighRankPets and allMaxed then
+        return firstPetName -- nên thống nhất pet
+    elseif sameRankPetCount >= ExtraFunction.GetMaxPets(plr) and allMaxed then
+        return betterboss(firstPetName)
+    end
+
+    if sameNamePetCount >= ExtraFunction.GetMaxPets(plr) then
+        return true -- đã đủ pet giống nhau
+    end
+
+    return false
+end
+
+function getEnemies2()
+    local maxDPSLimit = getgenv().MaxDPS * 100
+    local bestEnemy, bestId
+    local bestHP = 0
+    local lowestLvl = math.huge
+
+    -- Tìm boss tốt nhất (Brute) trong khả năng DPS
+    for enemyId, enemyInfo in pairs(EnemiesInfo) do
+        for mapPrefix in pairs(dataMap) do
+            if enemyId:find(mapPrefix) and enemyInfo.TypeG == "BrutesDefeated" and enemyInfo.HP <= maxDPSLimit and enemyInfo.HP > bestHP then
+                bestHP = enemyInfo.HP
+                bestEnemy = enemyInfo
+                bestId = enemyId
+            end
+        end
+    end
+
+    -- Kiểm tra thêm step2check để chọn mục tiêu tốt hơn
+    local betterName = step2check(bestEnemy and bestEnemy.Arise or nil)
+    print(betterName)
+    if type(betterName) == "string" then
+        -- Tìm lại theo betterName
+        for enemyId, enemyInfo in pairs(EnemiesInfo) do
+            for i,v in pairs(dataMap) do
+                if string.find(enemyId, i) and enemyInfo.Arise == betterName and enemyInfo.TypeG == "BrutesDefeated" then
+                    bestEnemy = enemyInfo
+                    bestId = enemyId
+                    bestHP = enemyInfo.HP
+                    break
+                end
+            end
+        end
+    elseif betterName == true or not bestEnemy then
+        print("Better?")
+        -- Tìm enemy thường mạnh nhất phù hợp DPS
+        bestHP = 0
+        for enemyId, enemyInfo in pairs(EnemiesInfo) do
+            for i,v in pairs(dataMap) do
+                if string.find(enemyId, i) and enemyInfo.HP <= maxDPSLimit and enemyInfo.HP > bestHP then
+                    bestHP = enemyInfo.HP
+                    bestEnemy = enemyInfo
+                    bestId = enemyId
+                end
+            end
+        end
+    end
+
+    local chosenEnemy = nil
+    for _, enemy in pairs(Services.CollectionService:GetTagged("EnemyServer")) do
+        local attrs = enemy:GetAttributes()
+        if attrs.Id == bestId and attrs.Level < lowestLvl then
+            chosenEnemy = enemy
+            lowestLvl = attrs.Level
+        end
+    end
+
+    print("Selected enemy:", chosenEnemy, bestId)
+    return {chosenEnemy, bestId}
+end
+
+function getEnemiesDungeon()
+    local chosenEnemy = nil
+    local hp = math.huge
+    for _, enemy in pairs(Services.CollectionService:GetTagged("EnemyServer")) do
+        local attrs = enemy:GetAttributes()
+        if table.find(enemiesblockdungeon, enemy.Name) == nil and attrs.HP < hp then
+            hp = attrs.HP
+            chosenEnemy = enemy
+        end
+    end
+    return {chosenEnemy, "CAC"}
+end
+
+function GetListPet()
+    return Services.Players.LocalPlayer.leaderstats.Equips.Pets:GetAttributes()
+end
+
+function PetIsAttacking()
+    return PetService.AllPetsAttacking(plr)
+end
+
+function PetIsAttackingGetId()
+    return PetService.GetCurrentTargets("",plr)[1] or nil
+end
+
+-- Function Loop
+function Attack()
+    local id = getValue("EnemiesId")
+    if id ~= nil then
+        EnemiNetwork:Fire({
+            Event = "PunchAttack", 
+            Enemy = id
+        });
+    end
+end
+
+task.spawn(function()
+    while haspet == false do task.wait(.2)
+        pcall(Attack)
+    end
+end)
+
+function fullyAttack(Enemies)
+    -- checkingstatus2("Attacking: "..Enemies.Name)
+    if (plr.Character.HumanoidRootPart.Position - Enemies.Position).Magnitude > 10 then
+        tweenfarm(Enemies.CFrame * CFrame.new(5,0,0), {speed = 100})
+    else
+        local enemy = setValue("EnemiesId", Enemies.Name)
+        if PetIsAttackingGetId() ~= Enemies.Name then
+            local goPet = {
+                Event = "Attack", 
+                AttackType = "All",
+                PetPos = {
+                },
+                Enemy = enemy
+            }
+            for i,v in pairs(GetListPet()) do
+                goPet.PetPos[v] = Enemies.Position
+            end
+            PetNetwork:Fire(goPet);
+            task.wait(.5)
+        end
+        repeat task.wait(.5)
+            setValue("EnemiesId", Enemies.Name)
+        until PetIsAttackingGetId() ~= Enemies.Name or not getgenv().Dungeon
+        local time = 0
+        repeat wait(.5)
+            if fullRank6 and not indungeon then
+                EnemiNetwork:Fire({
+                    Event = "EnemyDestroy", 
+                    Enemy = enemy
+                });
+            else
+                print(fullRank6, indungeon)
+                EnemiNetwork:Fire({
+                    Event = "EnemyCapture", 
+                    Enemy = enemy
+                });    
+            end
+            time = time + 1
+        until time > 3
+        setValue("blockenemies", Enemies.Name)
+        if not indungeon then
+            equipMaxPet()
+        else
+            table.insert(enemiesblockdungeon, Enemies.Name)
+        end
+        print("Concak")
+    end
+end
+
+function AutoFarm()
+    if getgenv().Dungeon and not indungeon then
+        local Enemies = getEnemies2(true)
+        if Enemies[1] == nil then
+            for i,v in pairs(dataMap) do
+                if string.find(Enemies[2], i) then
+                    tweenfarm(v)
+                end
+            end
+        else
+            fullyAttack(Enemies[1])
+        end
+        task.wait(2)
+    else
+        if indungeon then
+            fullyAttack(getEnemiesDungeon()[1])
+            print("Concak")
+        end
+    end
+end
+
+--
+
+-- setup Damage?
+
+function getPetDame(v, maxlvl)
+    local v333 = plr.leaderstats.Inventory.Pets[v]
+    local v332 = PetsInfo[v333:GetAttributes().Name]
+    local v336 = v333:GetAttribute("Rank") or 1;
+    local v337 = v332.HitDMG or 1;
+    local v338 = BalalnceInfo.RankDamageMultiplier[v336] or 1;
+    local v339 = maxlvl or v333:GetAttribute("Level") or 1;
+    return math.floor(v337 * v338 * 1.08313 ^ (v339 - 1))
+end
+
+function DameProtal(v)
+    local vcl = v:GetAttributes()
+    local v190 = ExtraFunction.GetMaxLevel(vcl.Rank);
+    local v191 = math.log10(getPetDame(v.Name, v190) + 1) * 100000;
+    local v192 = false and 500000000 or 0;
+    return -math.floor(v191 + math.log(getPetDame(v.Name) + 1, 2) * 10 + v192);
+end
+
+--- function equip max pet
+
+function equipMaxPet()
+    local listpet = {}
+    for i,v in pairs(plr.leaderstats.Inventory.Pets:GetChildren()) do
+        local vcl = v:GetAttributes()
+        if vcl.Rank then
+            table.insert(listpet, {
+                Name = v.Name,
+                Order = DameProtal(v);
+            })
+        end
+    end
+    table.sort(listpet, function(a,b)
+        return a.Order < b.Order
+    end)
+
+    local v40 = {};
+    for i = 1, math.min(ExtraFunction.GetMaxPets(plr), #listpet) do
+        table.insert(v40, listpet[i].Name);
+    end
+
+    v50 = {}
+
+    for i,v in pairs(listpet) do
+        if table.find(v40, v.Name) == nil and i > 7 then
+            table.insert(v50, v.Name)
+        end
+    end
+
+    PetNetwork:Fire({
+        Event = "EquipBest", 
+        Pets = v40
+    })
+    task.wait(.5)
+    PetNetwork:Fire({
+        Event = "SellPet", 
+        Pets = v50
+    });
+end
+
+---
+
+function autoBuySlot()
+    local attrs = plr.leaderstats.Passes:GetAttributes()
+    if attrs.ExtraEquip == false and (getgenv().config.buygamepass or getgenv().config.buyonlyslot) then
+        print("BUYYYYYY")
+        GenerealNetwork:Fire({
+            ["Type"] = "Pass",
+            ["Event"] = "TicketShop",
+            ["Name"] = "ExtraEquip"
+        })
+    else
+        if getgenv().config.buygamepass then
+            for i,v in pairs(attrs) do
+                if v == false then
+                    GenerealNetwork:Fire({
+                        ["Type"] = "Pass",
+                        ["Event"] = "TicketShop",
+                        ["Name"] = i
+                    })
+                end
+            end
+        end
+    end
+end
+
+function updateDps()
+    getgenv().MaxDPS = 0
+    for i,v in pairs(GetListPet()) do
+        getgenv().MaxDPS = getgenv().MaxDPS + getPetDame(v)
+    end
+    if getgenv().MaxDPS == 0 then
+        getgenv().MaxDPS = 2
+    end
+    getgenv().MaxDPS = getgenv().MaxDPS * 3
+    local gems = plr.leaderstats.GeneralStats:GetAttribute("TotalCoins")
+    -- checkingstatus("DPS: ".. DPSService.ObterDPS(), "Coin: ".. gems)
+    task.wait(10)
+    autoBuySlot()
+end
+
+task.spawn(function()
+    while true do task.wait()
+        pcall(updateDps)
+    end
+end)
+--
+
+--- function checkdungeon
+
+function FunctionDungeon() -- dit con me decomplie deo work nhe con me may
+    if not getgenv().Dungeon and getgenv().MaxDPS > 0 then
+        for i,v in pairs(dataDungeon) do
+            if getgenv().MaxDPS >= v then
+                tween(dataMap[i])
+                wait(5)
+                print("Tween di ne")
+                if Workspace.__Main.__Dungeon:FindFirstChild("Dungeon") then
+                    GenerealNetwork:Fire({
+                        Event = "DungeonAction", 
+                        Action = "BuyTicket", 
+                        Type = "Gems"
+                    })
+                    GenerealNetwork:Fire({
+                        Event = "DungeonAction",
+                        Action = "Create"
+                    })
+                    GenerealNetwork:Fire({
+                        Event = "DungeonAction",
+                        Action = "Start",
+                        Dungeon = plr.UserId
+                    })
+                    task.wait(1)
+                end    
+            end
+        end
+        getgenv().Dungeon = true
+    end
+end
+
+local function waitUntilNextNotification()
+    local currentTime = os.time()
+    local notificationInterval = 1800 -- 30 phút
+    local nextTime = math.ceil(currentTime / notificationInterval) * notificationInterval
+
+    print("Chờ", nextTime - currentTime, "giây để đến mốc thông báo tiếp theo.")
+    task.wait(nextTime - currentTime)
+end
+
+local function waitUntilNextNotification2()
+    local currentTime = os.time()
+    local notificationInterval = 2160 -- 36 phút
+    local nextTime = math.ceil(currentTime / notificationInterval) * notificationInterval
+
+    print("Chờ", nextTime - currentTime, "giây để đến mốc thông báo tiếp theo.")
+    task.wait(nextTime - currentTime)
+end
+
+task.spawn(function()
+    while true do task.wait(1)
+        if getgenv().Dungeon == true then
+            waitUntilNextNotification()
+            local timeString = os.date("%X")
+            getgenv().Dungeon = false
+        end
+    end    
+end)
+
+task.spawn(function()
+    while true do
+        if not indungeon then
+            pcall(function()
+                GenerealNetwork:Fire({
+                    Event = "DungeonAction", 
+                    Action = "BuyTicket", 
+                    Type = "Gems"
+                })
+                GenerealNetwork:Fire({
+                    Event = "DungeonAction",
+                    Action = "Create"
+                })
+                GenerealNetwork:Fire({
+                    Event = "DungeonAction",
+                    Action = "Start",
+                    Dungeon = plr.UserId
+                })
+            end)
+        end
+        task.wait(1)
+    end
+end)
+
+
+-- Loop
+
+while true do task.wait(.3)
+    local a,b = pcall(AutoFarm)
+    print(a,b)
+end
