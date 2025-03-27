@@ -99,9 +99,11 @@ local dataDungeon = {
 }
 
 --- lowest
-settings().Rendering.QualityLevel = Enum.QualityLevel.Level01
-UserSettings().GameSettings.MasterVolume = 0
-UserSettings().GameSettings.SavedQualityLevel = Enum.SavedQualitySetting.QualityLevel1
+pcall(function()
+    settings().Rendering.QualityLevel = Enum.QualityLevel.Level01
+    UserSettings().GameSettings.MasterVolume = 0
+    UserSettings().GameSettings.SavedQualityLevel = Enum.SavedQualitySetting.QualityLevel1
+end)
 pcall(function() 
     for i,v in getrunningscripts() do
         local a,b =pcall(function() 
