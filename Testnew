@@ -681,6 +681,7 @@ end)
 --- function checkdungeon
 
 function FunctionDungeon() -- dit con me decomplie deo work nhe con me may
+    print(has7slot , allmaxpet)
     if (not getgenv().Dungeon and getgenv().MaxDPS > 0) or (has7slot and allmaxpet) then
         if (has7slot and allmaxpet) then
             GenerealNetwork:Fire({
