@@ -1150,8 +1150,8 @@ function stringtopos(positionString)
 end
 
 function click(a)
-    VirtualInputManager:SendMouseButtonEvent(a.AbsolutePosition.X+a.AbsoluteSize.X/2,a.AbsolutePosition.Y+50,0,true,a,1)
-    VirtualInputManager:SendMouseButtonEvent(a.AbsolutePosition.X+a.AbsoluteSize.X/2,a.AbsolutePosition.Y+50,0,false,a,1)
+    VirtualInputManager:SendMouseButtonEvent(a.AbsolutePosition.X+a.AbsoluteSize.X/2,a.AbsolutePosition.Y+100,0,true,a,1)
+    VirtualInputManager:SendMouseButtonEvent(a.AbsolutePosition.X+a.AbsoluteSize.X/2,a.AbsolutePosition.Y+100,0,false,a,1)
 end
 
 local index = 1
