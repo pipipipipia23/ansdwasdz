@@ -1,3 +1,4 @@
+wait(10)
 if game.PlaceId == 16146832113 then
     getgenv().config = { -- dont change it (have smart config combo auto)
         combo_auto_igris = {
