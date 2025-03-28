@@ -1224,7 +1224,8 @@ spawn(function()
             if plr.PlayerGui:FindFirstChild("RewardsDisplay") then
                 if plr.PlayerGui.RewardsDisplay.Enabled == true then
                     spawn(function() 
-                        local asd = cloneref(game:GetService("Players").LocalPlayer.PlayerGui.UnitRevamp.Frame.UnitImage.ViewportFrame)
+                        print("Clicked")
+                        local asd = cloneref(game:GetService("Players").LocalPlayer.PlayerGui.ViewFrames.ViewFrame)
                         click(asd)
                     end)
                     return
