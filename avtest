@@ -1223,7 +1223,7 @@ spawn(function()
             if plr.PlayerGui:FindFirstChild("RewardsDisplay") then
                 if plr.PlayerGui.RewardsDisplay.Enabled == true then
                     spawn(function() 
-                        click(plr.PlayerGui.ViewFrames.ViewFrame)
+                        click(plr.PlayerGui.SkipWave.Holder.Yes.Button)
                     end)
                     return
                 end
