@@ -1,229 +1,996 @@
-getgenv().config = { -- dont change it (have smart config combo auto)
+if game.PlaceId == 16146832113 then
+    getgenv().config = { -- dont change it (have smart config combo auto)
+        combo_auto_igris = {
+            "Vogita Super",
+            "Sprintwagon",
+            "Alligator",
+            "Sosuke (Hebi)"
+        },
+        combomacro = { -- luu y next map 3 = 
+            Act1 = "https://raw.githubusercontent.com/pipipipipia23/aahsdasd-/refs/heads/main/Act1",
+            NextMap1 = "https://raw.githubusercontent.com/pipipipipia23/aahsdasd-/refs/heads/main/NextMap1",
+            NextMap2 = "https://raw.githubusercontent.com/pipipipipia23/aahsdasd-/refs/heads/main/NextMap2",
+            NextMap3 = "https://raw.githubusercontent.com/pipipipipia23/aahsdasd-/refs/heads/main/NextMap3",
+            LastMap = "https://raw.githubusercontent.com/pipipipipia23/aahsdasd-/refs/heads/main/LastMap"
+        }
+    }
+
+    function loadscript()
+
+    end
+
+    if game.PlaceId == 18219125606 then
+        local plr = cloneref(game.Players.LocalPlayer)
+        local TeleportRef = cloneref(game:GetService("TeleportService"))
+        local ts = TeleportRef
+        local p = plr
+        ts:Teleport(16146832113, p)
+    end
+
+    if game.PlaceId ~= 16146832113 then
+        loadscript()
+        return
+    end
+
+    spawn(function()
+        if game.PlaceId == 16146832113 then
+            local tickz = tick()
+            repeat wait()
+
+            until tick() - tickz >= 3 * 60
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/pipipipipia23/aahsdasd-/refs/heads/main/hopsv"))()
+        end
+    end)
+
+    repeat wait() until game:IsLoaded()
+    local plr = cloneref(game.Players.LocalPlayer)
+    local StartPlayer = cloneref(game:GetService("StarterPlayer"))
+    local Storage = cloneref(game:GetService("ReplicatedStorage"))
+    local Workspace = cloneref(workspace)
+    local HttpService = cloneref(game:GetService("HttpService"))
+    local TeleportRef = cloneref(game:GetService("TeleportService"))
+    local UnitHandler = require(StartPlayer.Modules.Interface.Loader.Windows.UnitWindowHandler)
+    local InventoryHandler = require(StartPlayer.Modules.Interface.Loader.Windows.InventoryHandler)
+    local LobbyHandler = require(StartPlayer.Modules.Interface.Loader.Windows.Lobby.LobbyHandler)
+    local Entidies_Units = require(Storage.Modules.Data.Entities.Units)
+    local SettingHandler = require(StartPlayer.Modules.Gameplay.SettingsHandler)
+    local summonevent = Storage.Networking.Units.SummonIndexEvent
+    local Network = Storage.Networking
+    local Quest = Network.Quests
+    local QuestRes = Quest.RequestQuests
+    local Achievements = Quest.RequestAchievements
+
+    -- import macro
+    spawn(function()
+        for i,v in pairs(getgenv().config.combomacro) do
+            local xamlok = game:HttpGet(v, true)
+            if xamlok == "HTTP Error Code: 404 Reason: Not Found" then
+                return 
+            end
+            print("Write new macro")
+            writefile(i.. ".txt", xamlok)
+        end
+    end)
+    --
+    function getunit()
+        local UnitHandler = require(StartPlayer.Modules.Interface.Loader.Windows.UnitWindowHandler)
+        return UnitHandler._Cache
+    end
+
+    function hasHub()
+        return plr.PlayerGui:FindFirstChild("HUD")
+    end
+
+    function firstselect_andsmt() -- choose units
+        if game.PlaceId == 16146832113 then
+            if hasHub() then
+                local args = {
+                    [1] = "Interact",
+                    [2] = {
+                        [1] = "StarterUnitDialogue",
+                        [2] = 1,
+                        [3] = "Okay!"
+                    }
+                }
+        
+                Storage.Networking.State.DialogueEvent:FireServer(unpack(args))
+                wait(1)
+                local args = {
+                    [1] = "Interact",
+                    [2] = {
+                        [1] = "StarterUnitDialogue",
+                        [2] = 2,
+                        [3] = "Yeah!"
+                    }
+                }
+        
+                Storage.Networking.State.DialogueEvent:FireServer(unpack(args))
+                wait(1)
+                local args = {
+                    [1] = "Interact",
+                    [2] = {
+                        [1] = "StarterUnitDialogue",
+                        [2] = 2,
+                        [3] = "Yeah!"
+                    }
+                }
+        
+                Storage.Networking.State.DialogueEvent:FireServer(unpack(args))
+                wait(1)
+                local args = {
+                    [1] = "Select",
+                    [2] = "Roku"
+                }
+        
+                Storage.Networking.Units.UnitSelectionEvent:FireServer(unpack(args))
+                wait(1)
+            end
+            wait(1)
+            local args = {
+                [1] = "ClaimAll"
+            }
+        
+            Storage.Networking.Units.CollectionEvent:FireServer(unpack(args))
+            wait(1)
+            local args = {
+                [1] = "ClaimAll"
+            }
+        
+            Storage.Networking.BattlepassEvent:FireServer(unpack(args))
+            wait(1)
+            local args = {
+                [1] = "ClaimAll"
+            }
+            
+            game:GetService("ReplicatedStorage").Networking.Mail.ClaimMailEvent:FireServer(unpack(args))        
+        end
+    end
+
+    function redeemcode_etc() -- auto get code and redeem
+        -- local html1 = game:HttpGet("https://www.eurogamer.net/roblox-anime-vanguards-codes", true)
+
+        -- local function removeExpiredCodes(html)
+        --     local working_codes_section = html:match("<h2 id=\"section%-1\">(.-)</ul>")
+        --     return working_codes_section .. "</ul>"
+        -- end
+
+        -- local html = removeExpiredCodes(html1)
+
+        -- local function extractCodes(html)
+        --     local codes = {}
+
+        --     for code, reward, new_tag in html:gmatch("<li>%s*<strong>(.-)</strong>%s*:%s*(.-)%s*<strong><em>(NEW)</em></strong>?") do
+        --         table.insert(codes, {code = code, reward = reward, is_new = "NEW"})
+        --     end
+
+        --     for code, reward in html:gmatch("<li>%s*<strong>(.-)</strong>%s*:%s*(.-)</li>") do
+        --         if not reward:find("NEW") then
+        --             table.insert(codes, {code = code, reward = reward, is_new = ""})
+        --         end
+        --     end
+
+        --     for _, entry in ipairs(codes) do
+        --         local new_status = entry.is_new ~= "" and " (NEW)" or ""
+        --         -- print("Code: " .. entry.code .. ", Reward: " .. entry.reward .. new_status)
+        --     end
+        --     return codes
+        -- end
+
+        -- for i,v in pairs(extractCodes(html)) do
+        --     local args = {
+        --         [1] = v.code
+        --     }
+        --     Storage.Networking.CodesEvent:FireServer(unpack(args))
+        --     wait(.5)
+        -- end
+
+        QuestRes:FireServer()
+        local v20, v21 = QuestRes.OnClientEvent:Wait()
+        for i,v in pairs(v21) do
+            if v.Completed == true and v.Claimed == false then
+                local args = {
+                    [1] = i
+                }
+
+                Storage.Networking.Quests.ClaimQuest:FireServer(unpack(args))
+                wait(.5)
+            end
+        end
+        Achievements:FireServer()
+        local v239, v240, v241, v242 = Achievements.OnClientEvent:Wait()
+        if v239 then
+            for i,v in pairs(v240) do
+                if v.Claimed == false then
+                    local args = {
+                        [1] = i
+                    }
+                    
+                    Storage.Networking.Quests.ClaimQuest:FireServer(unpack(args))                
+                end
+            end
+        end
+    end
+
+    function hasequip(id)
+        local UnitHandler = require(StartPlayer.Modules.Interface.Loader.Windows.UnitWindowHandler)
+        for i,v in pairs(UnitHandler.EquippedUnits) do
+            if i == id then
+                return true
+            end
+        end
+        return false
+    end
+
+    function equipunit(id)
+        repeat wait(1)
+            local args = {
+                [1] = "Equip",
+                [2] = id
+            }
+            
+            Storage.Networking.Units.EquipEvent:FireServer(unpack(args))
+            wait(2)
+        until hasequip(id) == true
+    end
+
+    function getmoney()
+        local Currencies = plr:GetAttribute("Gems")
+        return Currencies
+    end
+
+    function getlevel()
+        local Currencies = plr:GetAttribute("Level")
+        return Currencies
+    end
+
+    function gettimebanner()
+        local Currencies = Workspace:GetAttribute("SummonTimer")
+        return Currencies
+    end
+
+    function autosummon()
+        if haveinlist("Sprintwagon") and haveinlist("Alligator") then
+            turnonsetting("Epic")
+        end
+        if getmoney() > 500 then
+            local args = {
+                [1] = "SummonMany",
+                [2] = "Special",
+                [3] = 10
+            }
+            
+            Storage.Networking.Units.SummonEvent:FireServer(unpack(args))        
+            return true
+        end
+        return false
+    end
+
+    pcall(redeemcode_etc)
+    pcall(firstselect_andsmt)
+
+    -- custom setting
+    function turnonsetting(string)
+        if not SettingHandler:GetSetting(string) then
+            local args = {
+                [1] = "Toggle",
+                [2] = string
+            }
+            
+            Storage.Networking.Settings.SettingsEvent:FireServer(unpack(args))
+        end
+    end
+
+    pcall(function()
+        for i = 5, getlevel() , 5 do
+            local args = {
+                [1] = "Claim",
+                [2] = i
+            }
+            
+            Storage.Networking.Milestones.MilestonesEvent:FireServer(unpack(args))
+        end
+    end)
+
+    function haveinlist(nameunit)
+        local unitdata = getunit()
+        for i,v in pairs(unitdata) do
+            if unitdata[i].UnitData.Name == nameunit then
+                return true
+            end
+        end
+        return false
+    end
+
+    pcall(function()
+        turnonsetting("SkipSummonAnimation")
+        turnonsetting("LowDetailMode")   
+        turnonsetting("DisableVisualEffects")
+        turnonsetting("DisableDamageIndicators")
+        turnonsetting("DisableEnemyTags")
+        turnonsetting("DisableGlobalMessages")
+        turnonsetting("Rare")
+        turnonsetting("Legendary")
+        if haveinlist("Sprintwagon") and haveinlist("Alligator") then
+            turnonsetting("Epic")
+        end
+    end)
+
+    getgenv().unitinbanner = nil
+
+    local func = nil
+    for i,v in pairs(getgc()) do
+        if type(v) == "function" and tostring(getfenv(v).script) == "SummonIndexHandler" and debug.getinfo(v).name == "HandleLoadIndex" then
+            func = v
+        end
+    end
+
+    function ismythic(v)
+        if Storage.Modules.Data.Entities.UnitsData.Default.Mythic:FindFirstChild(v) then
+            return true
+        end
+        return false
+    end
+
+    function gethigher()
+        if getgenv().unitinbanner == nil then
+            for i,v in pairs(getupvalues(func)[4]) do
+                getgenv().unitinbanner = ismythic(v.Name)
+            end
+        end
+    end
+
+    if game.PlaceId == 16146832113 then
+        local args = {
+            [1] = "UnequipAll"
+        }
+        
+        Storage.Networking.Units.EquipEvent:FireServer(unpack(args))
+    end
+
+    local gradeScale = {
+        ["D"] = 1,
+        ["D+"] = 1.5,
+        ["C"] = 2,
+        ["C+"] = 2.5,
+        ["B"] = 3,
+        ["B+"] = 3.5,
+        ["A"] = 4,
+        ["A+"] = 4.5,
+        ["S"] = 5,
+        ["S+"] = 5.5,
+        ["Z"] = 6,
+        ["Z+"] = 7 -- Điểm cao nhất
+    }
+
+    function getbestunit(nameunit)
+        local unitdata = getunit()
+        local listunit = false
+        local score = 0
+        for i,v in pairs(unitdata) do
+            if unitdata[i].UnitData.Name == nameunit then
+                local scoremain = unitdata[i].Statistics.Damage.Percentage + unitdata[i].Statistics.Range.Percentage + unitdata[i].Statistics.SPA.Percentage + unitdata[i].Level
+                if score < scoremain then
+                    score = scoremain
+                    listunit = {i,v}
+                end
+            end
+        end
+        if listunit == false then return end
+        if type(unitdata[listunit[1]].Trait) ~= "table" then
+            local args = {
+                [1] = "Reroll",
+                [2] = {
+                    [1] = listunit[1],
+                    [2] = "Trait"
+                }
+            }
+            
+            Storage.Networking.Units.TraitEvent:FireServer(unpack(args))
+        end
+
+        if unitdata[listunit[1]].Takedowns > 5000 then
+            print(tostring(unitdata[listunit[1]].Statistics.SPA.Tier))
+            print(gradeScale[tostring(unitdata[listunit[1]].Statistics.SPA.Tier)])
+            if gradeScale[tostring(unitdata[listunit[1]].Statistics.Damage.Tier)] < 4 or gradeScale[tostring(unitdata[listunit[1]].Statistics.Range.Tier)] < 4 or gradeScale[tostring(unitdata[listunit[1]].Statistics.SPA.Tier)] < 4 then
+                local args = {
+                    [1] = "All",
+                    [2] = listunit[1]
+                }
+                
+                Storage.Networking.StatRerollFunction:InvokeServer(unpack(args))       
+            end       
+        end
+
+        return listunit
+    end
+
+    function findandfeed(id)
+        local l_v9_Inventory_1 = InventoryHandler:GetInventory()
+        local vailondata = {}
+        for v129, v130 in l_v9_Inventory_1 do
+            if v130.Data.ItemGroup == "UnitFood" then
+                table.insert(vailondata, {v130.Data.Name, v130.Amount})
+            end
+        end
+        local args = {
+            [1] = "Feed",
+            [2] = {
+                [1] = id,
+                [2] = vailondata
+            }
+        }
+        Storage.Networking.Units.FeedEvent:FireServer(unpack(args))
+    end
+    ---
+
+    local datacraft = {
+        ["Senzu Bean"] = 80, 
+        ["Green Essence Stone"] = 35,
+        ["Blue Essence Stone"] = 15,
+        ["Yellow Essence Stone"] = 10,
+        ["Rainbow Essence Stone"] = 2,
+    }
+
+    function checkitemAM(name,amount)
+        local l_v9_Inventory_1 = InventoryHandler:GetInventory()
+        for i,v in pairs(l_v9_Inventory_1) do
+            if v.Data.Name == name then
+                return v.Amount >= amount
+            end
+        end
+        return false
+    end
+
+    function craftitem(name)
+        if name == "Rainbow Essence Stone" then
+            local args = {
+                [1] = "Craft",
+                [2] = name,
+                [3] = 1
+            }
+            
+            Storage.Networking.State.CraftingEvent:FireServer(unpack(args))   
+            return
+        end
+        if checkitemAM("Green Essence Stone", 3) == true then
+            local args = {
+                [1] = "Craft",
+                [2] = name,
+                [3] = 1
+            }
+            
+            Storage.Networking.State.CraftingEvent:FireServer(unpack(args))
+            return
+        else
+            return "NeedGreen"
+        end
+    end
+
+    function awakenvegeta()
+        getgenv().cantawake = false
+        if haveinlist("Vogita Super (Awakened)") then
+            return false
+        end
+        for i,v in pairs(datacraft) do
+            if checkitemAM(i, v) == false then
+                print(i)
+                getgenv().cantawake = true
+                if string.find(i, "Stone") and i ~= "Rainbow Essence Stone" then
+                    if i ~= "Green Essence Stone" then
+                        if checkitemAM(i, v) == false then
+                            return craftitem(i)
+                        end
+                    else
+                        if checkitemAM(i, v) == false then
+                            return "NeedGreen"
+                        end
+                    end
+                elseif i ~= "Rainbow Essence Stone" then
+                    if checkitemAM(i, v) == false then
+                        return "NeedBean"
+                    end
+                elseif i == "Rainbow Essence Stone" then
+                    if checkitemAM("Rainbow Essence Stone", 2) == true then
+                        print("Trong day")
+                    else
+                        if checkitemAM("Pink Essence Stone", 1) ~= true then
+                            return craftitem("Pink Essence Stone")
+                        end
+                        if checkitemAM("Blue Essence Stone", 1) ~= true then
+                            return craftitem("Blue Essence Stone")
+                        end
+                        if checkitemAM("Red Essence Stone", 1) ~= true then
+                            return craftitem("Red Essence Stone")
+                        end
+                        if checkitemAM("Yellow Essence Stone", 1) ~= true then
+                            return craftitem("Yellow Essence Stone")
+                        end
+                        if checkitemAM("Purple Essence Stone", 1) ~= true then
+                            return craftitem("Purple Essence Stone")
+                        end
+                        print("Craft Rainbow")
+                        return craftitem("Rainbow Essence Stone")
+                    end
+                end
+            end
+        end
+        if getgenv().cantawake ~= true and not haveinlist("Vogita Super (Awakened)") then
+            local args = {
+                [1] = getbestunit("Vogita Super")[1]
+            }
+            
+            Storage.Networking.Units.EvolveEvent:FireServer(unpack(args))
+            wait(2)
+            if haveinlist("Vogita Super (Awakened)") then
+                equipunit(getbestunit("Vogita Super (Awakened)")[1])
+            end
+        end
+        if haveinlist("Vogita Super (Awakened)") == true then
+            return false
+        end
+    end
+
+    -- find and change another legen Vogita Super (Awakened)
+    pcall(function()
+        local unitdata = getunit()
+        if haveinlist(getgenv().config.combo_auto_igris[4]) == false then
+            for i,v in pairs(unitdata) do
+                if v.UnitData.Rarity == "Mythic" and v.UnitData.MaxPlacements > 3 and v.UnitData.Name ~= "Vogita Super" then
+                    getgenv().config.combo_auto_igris[4] = v.UnitData.Name
+                end
+            end
+        end
+        if haveinlist("Vogita Super (Awakened)") then
+            getgenv().config.combo_auto_igris[1] = "Vogita Super (Awakened)"
+        end
+    end)
+
+    -- custom macro kekekeke
+
+    function custommacro(link,namemacro)
+        local xamlok = game:HttpGet(link, true)
+        getgenv().loadmacro = HttpService:JSONDecode(xamlok)
+
+        function findid(name)
+            for i,v in pairs(getunit()) do
+                if v.UnitData.Name == name then
+                    return v.Identifier
+                end
+            end
+            return false
+        end
+        
+        function calcmoney(name)
+            local path = "nil"
+            for i,v in pairs(Storage.Modules.Data.Entities.UnitsData.Default:GetDescendants()) do
+                if v.Name == name then
+                    path = v
+                end
+            end
+            local refcl = cloneref(path)
+            local vail = require(refcl)
+            return vail.Price
+        end
+        
+        function calcmoneyupdate(name,price)
+            local path = "nil"
+            for i,v in pairs(Storage.Modules.Data.Entities.UnitsData.Default:GetDescendants()) do
+                if v.Name == name then
+                    path = v
+                end
+            end
+            local refcl = cloneref(path)
+            local vail = require(refcl)
+            for i,v in pairs(vail.Upgrades) do
+                if v.Price == price then
+                    return i
+                end
+            end
+            return false
+        end
+        
+        function calcmoneyupdate2(name,index)
+            local path = "nil"
+            for i,v in pairs(Storage.Modules.Data.Entities.UnitsData.Default:GetDescendants()) do
+                if v.Name == name then
+                    path = v
+                end
+            end
+            local refcl = cloneref(path)
+            local vail = require(refcl)
+            return vail.Upgrades[index].Price or 999999999999
+        end
+        
+        local allpos = {}
+        
+        for i,v in pairs(getgenv().loadmacro) do
+            if v.data.Method == "Render" then
+                if getgenv().loadmacro[i].data.Name == "Sosuke (Hebi)" then
+                    local mainunit = getgenv().config.combo_auto_igris[4]
+                    allpos[getgenv().loadmacro[i].data.CFrame] = getgenv().loadmacro[i].data.Name
+                    print(getgenv().loadmacro[i].data.Id, findid(mainunit) , namemacro)
+                    getgenv().loadmacro[i].data.Id = findid(mainunit)
+                    getgenv().loadmacro[i].data.Name = mainunit
+                    getgenv().loadmacro[i].data.Money = calcmoney(mainunit)
+                end
+            end
+        end
+        
+        local datasave = {}
+        
+        for i,v in pairs(getgenv().loadmacro) do
+            if v.data.Method == "Upgrade" then
+                if allpos[getgenv().loadmacro[i].data.CFrame] then
+                    table.insert(datasave , {getgenv().loadmacro[i].data.CFrame, getgenv().loadmacro[i].data.Money})
+                end
+            end
+        end
+        
+        for i,v in pairs(getgenv().loadmacro) do
+            if v.data.Method == "Upgrade" then
+                for i1,v1 in pairs(datasave) do
+                    if v1[1] == getgenv().loadmacro[i].data.CFrame and v1[2] == getgenv().loadmacro[i].data.Money then
+                        getgenv().loadmacro[i].data.Money = calcmoneyupdate2(getgenv().config.combo_auto_igris[4], calcmoneyupdate("Sosuke (Hebi)",v1[2]))
+                    end
+                end
+            end
+        end
+        print("Write :" .. namemacro .. ".txt")
+        writefile(namemacro .. ".txt",HttpService:JSONEncode(getgenv().loadmacro))
+    end
+
+    pcall(function()
+        print("Let custom")
+        custommacro("https://raw.githubusercontent.com/pipipipipia23/aahsdasd-/refs/heads/main/LastMap", "LastMap")
+        custommacro("https://raw.githubusercontent.com/pipipipipia23/aahsdasd-/refs/heads/main/NextMap3", "NextMap3")
+    end)
+    -- auto
+    local plr = game.Players.LocalPlayer
+    function checkplayerin(pos)
+        local res = false
+        for i,v in pairs(game.Players:GetChildren()) do
+            if v.Character then
+                if v.Character:FindFirstChild("HumanoidRootPart") and v.Name ~= plr.Name  then
+                    if (v.Character.HumanoidRootPart.Position - pos.Position).Magnitude <= 10 then
+                        res = true
+                    end
+                end
+            end
+        end
+        return res
+    end
+
+    -- calc map
+
+    function getnextstage()
+        local a = "Stage1"
+        for i,v in pairs(LobbyHandler.PlayerData.Stages.Story) do
+            a = i
+        end
+        return a
+    end
+
+    function getnextmap()
+        local a = "Act1"
+        local num = 1
+        local nextstage = getnextstage()
+        for i,v in pairs(LobbyHandler.PlayerData.Stages.Story[nextstage]) do
+            if i ~= "Infinite" then
+                local actNumber = i:gsub("Act", "")
+                if tonumber(actNumber) > num then
+                    num = tonumber(actNumber)
+                    a = "Act" .. actNumber
+                end
+            else
+                if nextstage == "Stage3" then
+                    num = 7
+                    a = "Infinite"
+                end
+            end
+        end
+        if nextstage == "Stage3" and a == "Infinite" then
+            return false
+        else
+            return a
+        end
+    end
+
+    function legenstage()
+        local a = "Stage1"
+        for i,v in pairs(LobbyHandler.PlayerData.Stages.LegendStage) do
+            a = i
+        end
+        return a
+    end
+
+    function getnextmaplegend()
+        local a = "Act1"
+        local num = 1
+        local nextstage = legenstage()
+        for i,v in pairs(LobbyHandler.PlayerData.Stages.LegendStage[nextstage]) do
+            local actNumber = i:gsub("Act", "")
+            if tonumber(actNumber) > num and i ~= "Infinite" then
+                num = tonumber(actNumber)
+                a = "Act" .. actNumber
+            end
+        end
+        return a
+    end
+
+    function joinstage(stage, act, mode)
+        local args = {
+            [1] = "AddMatch",
+            [2] = {
+                ["Difficulty"] = "Normal",
+                ["Act"] = act,
+                ["StageType"] = mode,
+                ["Stage"] = stage,
+                ["FriendsOnly"] = false
+            }
+        }
+        
+        Storage.Networking.LobbyEvent:FireServer(unpack(args))
+        wait(.2)
+        local args = {
+            [1] = "Confirm",
+            [2] = {
+                [1] = mode,
+                [2] = stage,
+                [3] = act,
+                [4] = "Normal",
+                [5] = 4,
+                [6] = 0,
+                [7] = true
+            }
+        }
+        
+        Storage.Networking.LobbyEvent:FireServer(unpack(args))
+        wait(.2)
+        local args = {
+            [1] = "StartMatch"
+        }
+        
+        Storage.Networking.LobbyEvent:FireServer(unpack(args))
+    end
+
+    spawn(function()
+        writefile("TimeBanner.txt", tostring(gettimebanner() + tick()))
+    end)
+
+    spawn(function()
+        writefile("can_next_map.txt", "DeoDuocNehjhj")
+    end)
+
+    spawn(function()
+        writefile("farm_crystal.txt", "DeoDuocNehjhj")
+    end)
+
+    spawn(function()
+        if haveinlist("Igros") then
+            writefile(plr.Name .. ".txt", "Completed-AccHoanThanh")
+        end
+    end)
+
+    --- function custom remove()
+    function getfkingunit()
+        local a = 0
+        for i,v in pairs(getunit()) do
+            a = a + 1
+        end
+        return a
+    end
+
+    function getunitsell()
+        local allunit = {}
+        for i,v in pairs(getunit()) do
+            if (v.UnitData.Rarity == "Rare" or v.UnitData.Rarity == "Epic" or v.UnitData.Rarity == "Legendary") and v.UnitData.Name ~= "Sprintwagon" and v.UnitData.Name ~= "Alligator"and v.UnitData.Name ~= "Roku" then
+                table.insert(allunit, i)
+            end
+        end
+        return allunit
+    end
+
+    function removeunit()
+        if plr.PlayerGui.Windows.Units.Enabled == false then
+            getconnections(plr.PlayerGui.HUD.SideButtons.Buttons.Units.Button.Activated)[1]:Fire()
+            wait(1)
+        else
+            local listunit = getunitsell()
+            pcall(function()
+                getconnections(plr.PlayerGui.Windows.Units.Holder.Main.Units[listunit[1]].Button.Activated)[1]:Fire()
+            end)
+            wait(1)
+            pcall(function()
+                getconnections(plr.PlayerGui.InventoryHover.SelectedContainer[listunit[1] .. "Preview"].Main.Buttons.Sell.Button.Activated)[1]:Fire()
+            end)
+            wait(1)
+            for i,v in pairs(listunit) do 
+                pcall(function()
+                    getconnections(plr.PlayerGui.Windows.Units.Holder.Main.Units[v].Button.Activated)[1]:Fire()
+                end)
+            end
+            wait(1)
+            pcall(function()
+                getconnections(plr.PlayerGui.Windows.Units.Holder.Sell.Button.Activated)[1]:Fire()
+            end)
+            wait(1)
+            pcall(function()
+                getconnections(plr.PlayerGui.Confirmation.Confirmation.Main.Yes.Button.Activated)[1]:Fire()
+            end)
+        end
+    end
+
+    ---
+
+    function main()
+        if getmoney() > 500 and getgenv().nomorebanner ~= true then
+            if getfkingunit() > 90 then
+                removeunit()
+                return
+            end        
+            print("Unit : ", getgenv().unitinbanner)
+            if getgenv().unitinbanner == nil then
+                gethigher()
+                return
+            end
+
+            for i,v in pairs(getgenv().config.combo_auto_igris) do
+                if getgenv().unitinbanner == v and not haveinlist(v) then
+                    autosummon()
+                    return
+                end
+            end
+            getgenv().nomorebanner = true
+        else 
+            -- if getlevel() > 30 then
+                if getgenv().asdhsuadsahjda == nil then
+                    for i,v in pairs(getgenv().config.combo_auto_igris) do
+                        local getbest = getbestunit(v)
+                        if getbest ~= nil then
+                            equipunit(getbest[1])
+                            if getbest[2].Level < 50 and v ~= "Sprintwagon" then
+                                if (v == "Alligator" and getbest[2].Level < 30) or v ~= "Alligator" then
+                                    findandfeed(getbest[1])
+                                    getgenv().notfulllvl = true
+                                end
+                            end
+                        else
+                            getgenv().ditmevailon = true
+                            equipunit(getbestunit("Roku")[1])
+                        end
+                        wait(2)
+                    end
+                    getgenv().asdhsuadsahjda = false
+                end
+                if getgenv().ditmevailon == true then
+                    print("Go here dit me may2")
+                    local stagene = "Act" .. tostring(math.random(1,2))
+                    joinstage("Stage1", stagene, "Story")
+                    return
+                end
+                if getgenv().ditmevailon ~= true and getgenv().notfulllvl == true then
+                    print("Go here dit me may")
+                    joinstage("Stage1", "Act3", "Story")
+                    getgenv().stop = true
+                    return
+                else
+                    spawn(function()
+                        writefile("can_next_map.txt", "Duocnekhjhj")
+                    end)
+                    if getnextmap() ~= false then
+                        print("CA1")
+                        joinstage(getnextstage(), getnextmap(), "Story")
+                    else
+                        local awakenne = awakenvegeta()
+                        if awakenne == nil then
+                            return
+                        end
+                        if awakenne == false then
+                            print("CA2")
+                            print(legenstage(), getnextmaplegend(),"LegendStage")
+                            joinstage(legenstage(), getnextmaplegend(), "LegendStage")
+                        else
+                            if awakenne == "NeedBean" then
+                                spawn(function()
+                                    writefile("farm_crystal.txt", "Duocnekhjhj")
+                                end)
+                                print("CA3")
+                                joinstage("Stage1", "Act3" , "Story")
+                                return
+                            end
+                            if legenstage() == "Stage3" and awakenne == "NeedGreen" then
+                                spawn(function()
+                                    writefile("farm_crystal.txt", "Duocnekhjhj")
+                                end)
+                                print("CA4")
+                                local stagene = "Act" .. tostring(math.random(1,2))
+                                joinstage("Stage2", stagene, "LegendStage")
+                            else
+                                print("CA5")
+                                joinstage(legenstage(), getnextmaplegend(), "LegendStage")
+                            end
+                        end
+                    end
+                end
+            -- else
+            --     print("chay thoi")
+            --     wait(1)
+            --     equipunit(getbestunit("Roku")[1])
+            --     wait(1)
+            --     joinstage("Stage1", "Act1")
+            --     getgenv().stop = true
+            --end
+        end
+    end
+
+    spawn(function() 
+        while getgenv().stop ~= true do wait()
+            local a,b = pcall(main)
+            print(a,b)
+        end
+    end)
+
+
+    -- if game.PlaceId == 16146832113 then
+    --     return
+    -- end
+else
+    getgenv().config = { -- dont change it (have smart config combo auto)
     combo_auto_igris = {
         "Vogita Super",
         "Sprintwagon",
         "Alligator",
         "Sosuke (Hebi)"
-    },
-    combomacro = { -- luu y next map 3 = 
-        Act1 = "https://raw.githubusercontent.com/pipipipipia23/aahsdasd-/refs/heads/main/Act1",
-        NextMap1 = "https://raw.githubusercontent.com/pipipipipia23/aahsdasd-/refs/heads/main/NextMap1",
-        NextMap2 = "https://raw.githubusercontent.com/pipipipipia23/aahsdasd-/refs/heads/main/NextMap2",
-        NextMap3 = "https://raw.githubusercontent.com/pipipipipia23/aahsdasd-/refs/heads/main/NextMap3",
-        LastMap = "https://raw.githubusercontent.com/pipipipipia23/aahsdasd-/refs/heads/main/LastMap"
     }
 }
 
-function loadscript()
-
-end
-
-if game.PlaceId == 18219125606 then
-    local plr = cloneref(game.Players.LocalPlayer)
-    local TeleportRef = cloneref(game:GetService("TeleportService"))
-    local ts = TeleportRef
-    local p = plr
-    ts:Teleport(16146832113, p)
-end
-
-if game.PlaceId ~= 16146832113 then
-    loadscript()
-    return
-end
-
-spawn(function()
-    if game.PlaceId == 16146832113 then
-        local tickz = tick()
-        repeat wait()
-
-        until tick() - tickz >= 3 * 60
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/pipipipipia23/aahsdasd-/refs/heads/main/hopsv"))()
-    end
-end)
-
+getgenv().recmacro = false
 repeat wait() until game:IsLoaded()
 local plr = cloneref(game.Players.LocalPlayer)
 local StartPlayer = cloneref(game:GetService("StarterPlayer"))
 local Storage = cloneref(game:GetService("ReplicatedStorage"))
-local Workspace = cloneref(workspace)
+local YenEvent = cloneref(Storage.Networking.ClientListeners.YenEvent)
 local HttpService = cloneref(game:GetService("HttpService"))
+local VirtualInputManager = cloneref(game:GetService("VirtualInputManager"))
+local Workspace = cloneref(workspace)
 local TeleportRef = cloneref(game:GetService("TeleportService"))
-local UnitHandler = require(StartPlayer.Modules.Interface.Loader.Windows.UnitWindowHandler)
-local InventoryHandler = require(StartPlayer.Modules.Interface.Loader.Windows.InventoryHandler)
-local LobbyHandler = require(StartPlayer.Modules.Interface.Loader.Windows.Lobby.LobbyHandler)
-local Entidies_Units = require(Storage.Modules.Data.Entities.Units)
-local SettingHandler = require(StartPlayer.Modules.Gameplay.SettingsHandler)
-local summonevent = Storage.Networking.Units.SummonIndexEvent
-local Network = Storage.Networking
-local Quest = Network.Quests
-local QuestRes = Quest.RequestQuests
-local Achievements = Quest.RequestAchievements
+local clonestep2_1 = cloneref(Storage.Modules.Gameplay.GameHandler)
+local clonestep2_2 = cloneref(StartPlayer.Modules.Interface.Loader.HUD.Units)
+local clonestep2_3 = cloneref(Storage.Modules.Data.Entities.EntityIDHandler.Units)
+local Yenhandler = cloneref(StartPlayer.Modules.Gameplay.PlayerYenHandler)
+local GameHandler = require(clonestep2_1)
+local UnitEquipedData = require(clonestep2_2)
+local UnitsName = require(clonestep2_3)
+local v22 = require(Yenhandler)
 
--- import macro
-spawn(function()
-    for i,v in pairs(getgenv().config.combomacro) do
-        local xamlok = game:HttpGet(v, true)
-        if xamlok == "HTTP Error Code: 404 Reason: Not Found" then
-            return 
-        end
-        print("Write new macro")
-        writefile(i.. ".txt", xamlok)
-    end
-end)
---
-function getunit()
-    local UnitHandler = require(StartPlayer.Modules.Interface.Loader.Windows.UnitWindowHandler)
-    return UnitHandler._Cache
-end
+print("Start rec macro")
 
-function hasHub()
-    return plr.PlayerGui:FindFirstChild("HUD")
-end
+local macro = {}
 
-function firstselect_andsmt() -- choose units
-    if game.PlaceId == 16146832113 then
-        if hasHub() then
-            local args = {
-                [1] = "Interact",
-                [2] = {
-                    [1] = "StarterUnitDialogue",
-                    [2] = 1,
-                    [3] = "Okay!"
-                }
-            }
-    
-            Storage.Networking.State.DialogueEvent:FireServer(unpack(args))
-            wait(1)
-            local args = {
-                [1] = "Interact",
-                [2] = {
-                    [1] = "StarterUnitDialogue",
-                    [2] = 2,
-                    [3] = "Yeah!"
-                }
-            }
-    
-            Storage.Networking.State.DialogueEvent:FireServer(unpack(args))
-            wait(1)
-            local args = {
-                [1] = "Interact",
-                [2] = {
-                    [1] = "StarterUnitDialogue",
-                    [2] = 2,
-                    [3] = "Yeah!"
-                }
-            }
-    
-            Storage.Networking.State.DialogueEvent:FireServer(unpack(args))
-            wait(1)
-            local args = {
-                [1] = "Select",
-                [2] = "Roku"
-            }
-    
-            Storage.Networking.Units.UnitSelectionEvent:FireServer(unpack(args))
-            wait(1)
-        end
-        wait(1)
-        local args = {
-            [1] = "ClaimAll"
-        }
-    
-        Storage.Networking.Units.CollectionEvent:FireServer(unpack(args))
-        wait(1)
-        local args = {
-            [1] = "ClaimAll"
-        }
-    
-        Storage.Networking.BattlepassEvent:FireServer(unpack(args))
-    end
-end
+local defaultindex = 0
 
-function redeemcode_etc() -- auto get code and redeem
-    -- local html1 = game:HttpGet("https://www.eurogamer.net/roblox-anime-vanguards-codes", true)
-
-    -- local function removeExpiredCodes(html)
-    --     local working_codes_section = html:match("<h2 id=\"section%-1\">(.-)</ul>")
-    --     return working_codes_section .. "</ul>"
-    -- end
-
-    -- local html = removeExpiredCodes(html1)
-
-    -- local function extractCodes(html)
-    --     local codes = {}
-
-    --     for code, reward, new_tag in html:gmatch("<li>%s*<strong>(.-)</strong>%s*:%s*(.-)%s*<strong><em>(NEW)</em></strong>?") do
-    --         table.insert(codes, {code = code, reward = reward, is_new = "NEW"})
-    --     end
-
-    --     for code, reward in html:gmatch("<li>%s*<strong>(.-)</strong>%s*:%s*(.-)</li>") do
-    --         if not reward:find("NEW") then
-    --             table.insert(codes, {code = code, reward = reward, is_new = ""})
-    --         end
-    --     end
-
-    --     for _, entry in ipairs(codes) do
-    --         local new_status = entry.is_new ~= "" and " (NEW)" or ""
-    --         -- print("Code: " .. entry.code .. ", Reward: " .. entry.reward .. new_status)
-    --     end
-    --     return codes
-    -- end
-
-    -- for i,v in pairs(extractCodes(html)) do
-    --     local args = {
-    --         [1] = v.code
-    --     }
-    --     Storage.Networking.CodesEvent:FireServer(unpack(args))
-    --     wait(.5)
-    -- end
-
-    QuestRes:FireServer()
-    local v20, v21 = QuestRes.OnClientEvent:Wait()
-    for i,v in pairs(v21) do
-        if v.Completed == true and v.Claimed == false then
-            local args = {
-                [1] = i
-            }
-
-            Storage.Networking.Quests.ClaimQuest:FireServer(unpack(args))
-            wait(.5)
+function getpos(name)
+    for i,v in pairs(Workspace.Units:GetChildren()) do
+        if v.Name == name then
+            return v.HumanoidRootPart.Position
         end
     end
-    Achievements:FireServer()
-    local v239, v240, v241, v242 = Achievements.OnClientEvent:Wait()
-    if v239 then
-        for i,v in pairs(v240) do
-            if v.Claimed == false then
-                local args = {
-                    [1] = i
-                }
-                
-                Storage.Networking.Quests.ClaimQuest:FireServer(unpack(args))                
-            end
-        end
-    end
+    return "Dit me may lỗi rồi"
 end
 
-function hasequip(id)
-    local UnitHandler = require(StartPlayer.Modules.Interface.Loader.Windows.UnitWindowHandler)
-    for i,v in pairs(UnitHandler.EquippedUnits) do
-        if i == id then
-            return true
+function postouid(pos)
+    for i,v in pairs(Workspace.Units:GetChildren()) do
+        if (v.HumanoidRootPart.Position - pos).Magnitude <= 2 then
+            return v.Name
         end
     end
     return false
 end
 
-function equipunit(id)
-    repeat wait(1)
-        local args = {
-            [1] = "Equip",
-            [2] = id
-        }
-        
-        Storage.Networking.Units.EquipEvent:FireServer(unpack(args))
-        wait(2)
-    until hasequip(id) == true
+function remote(method, data)
+    local Storage = cloneref(game:GetService("ReplicatedStorage"))
+    local l_UnitEvent_0 = Storage.Networking.UnitEvent
+    l_UnitEvent_0:FireServer(method, data)
 end
 
 function getmoney()
@@ -231,693 +998,317 @@ function getmoney()
     return Currencies
 end
 
-function getlevel()
-    local Currencies = plr:GetAttribute("Level")
-    return Currencies
-end
-
-function gettimebanner()
-    local Currencies = Workspace:GetAttribute("SummonTimer")
-    return Currencies
-end
-
-function autosummon()
-    if haveinlist("Sprintwagon") and haveinlist("Alligator") then
-        turnonsetting("Epic")
-    end
-    if getmoney() > 500 then
-        local args = {
-            [1] = "SummonTen",
-            [2] = "Special"
-        }
-        
-        Storage.Networking.Units.SummonEvent:FireServer(unpack(args))
-        return true
-    end
-    return false
-end
-
-pcall(redeemcode_etc)
-pcall(firstselect_andsmt)
-
--- custom setting
-function turnonsetting(string)
-    if not SettingHandler:GetSetting(string) then
-        local args = {
-            [1] = "Toggle",
-            [2] = string
-        }
-        
-        Storage.Networking.Settings.SettingsEvent:FireServer(unpack(args))
-    end
-end
-
-pcall(function()
-    for i = 5, getlevel() , 5 do
-        local args = {
-            [1] = "Claim",
-            [2] = i
-        }
-        
-        Storage.Networking.Milestones.MilestonesEvent:FireServer(unpack(args))
-    end
-end)
-
-function haveinlist(nameunit)
-    local unitdata = getunit()
-    for i,v in pairs(unitdata) do
-        if unitdata[i].UnitData.Name == nameunit then
-            return true
+function calcmoney(name)
+    local path = "nil"
+    for i,v in pairs(Storage.Modules.Data.Entities.UnitsData:GetDescendants()) do
+        if v.Name == name then
+            path = v
         end
     end
-    return false
+    local refcl = cloneref(path)
+    local vail = require(refcl)
+    return vail.Price
 end
 
-pcall(function()
-    turnonsetting("SkipSummonAnimation")
-    turnonsetting("LowDetailMode")   
-    turnonsetting("DisableVisualEffects")
-    turnonsetting("DisableDamageIndicators")
-    turnonsetting("DisableEnemyTags")
-    turnonsetting("DisableGlobalMessages")
-    turnonsetting("Rare")
-    turnonsetting("Legendary")
-    if haveinlist("Sprintwagon") and haveinlist("Alligator") then
-        turnonsetting("Epic")
-    end
-end)
+local dataplace = {
 
-getgenv().unitinbanner = nil
-
-summonevent.OnClientEvent:Connect(function(v56, v57)
-    if v56 == "ReplicateRates" then
-        local viaz = 0
-        for i,v in pairs(v57.Mythic) do
-            if viaz < v57.Mythic[i].Chance then
-                viaz = v57.Mythic[i].Chance
-                getgenv().unitinbanner = v57.Mythic[i].Name
-            end
-        end
-    end
-end)
-
-function gethigher()
-    if getgenv().unitinbanner == nil then
-        summonevent:FireServer()
-    end
-end
-
-if game.PlaceId == 16146832113 then
-    local args = {
-        [1] = "UnequipAll"
-    }
-    
-    Storage.Networking.Units.EquipEvent:FireServer(unpack(args))
-end
-
-local gradeScale = {
-    ["D"] = 1,
-    ["D+"] = 1.5,
-    ["C"] = 2,
-    ["C+"] = 2.5,
-    ["B"] = 3,
-    ["B+"] = 3.5,
-    ["A"] = 4,
-    ["A+"] = 4.5,
-    ["S"] = 5,
-    ["S+"] = 5.5,
-    ["Z"] = 6,
-    ["Z+"] = 7 -- Điểm cao nhất
 }
 
-function getbestunit(nameunit)
-    local unitdata = getunit()
-    local listunit = false
-    local score = 0
-    for i,v in pairs(unitdata) do
-        if unitdata[i].UnitData.Name == nameunit then
-            local scoremain = unitdata[i].Statistics.Damage.Percentage + unitdata[i].Statistics.Range.Percentage + unitdata[i].Statistics.SPA.Percentage + unitdata[i].Level
-            if score < scoremain then
-                score = scoremain
-                listunit = {i,v}
-            end
-        end
-    end
-    if listunit == false then return end
-    if type(unitdata[listunit[1]].Trait) ~= "table" then
-        local args = {
-            [1] = "Reroll",
-            [2] = {
-                [1] = listunit[1],
-                [2] = "Trait"
-            }
-        }
-        
-        Storage.Networking.Units.TraitEvent:FireServer(unpack(args))
-    end
+local meomeo = {
 
-    if unitdata[listunit[1]].Takedowns > 5000 then
-        print(tostring(unitdata[listunit[1]].Statistics.SPA.Tier))
-        print(gradeScale[tostring(unitdata[listunit[1]].Statistics.SPA.Tier)])
-        if gradeScale[tostring(unitdata[listunit[1]].Statistics.Damage.Tier)] < 4 or gradeScale[tostring(unitdata[listunit[1]].Statistics.Range.Tier)] < 4 or gradeScale[tostring(unitdata[listunit[1]].Statistics.SPA.Tier)] < 4 then
-            local args = {
-                [1] = "All",
-                [2] = listunit[1]
-            }
-            
-            Storage.Networking.StatRerollFunction:InvokeServer(unpack(args))       
-        end       
-    end
-
-    return listunit
-end
-
-function findandfeed(id)
-    local l_v9_Inventory_1 = InventoryHandler:GetInventory()
-    local vailondata = {}
-    for v129, v130 in l_v9_Inventory_1 do
-        if v130.Data.ItemGroup == "UnitFood" then
-            table.insert(vailondata, {v130.Data.Name, v130.Amount})
-        end
-    end
-    local args = {
-        [1] = "Feed",
-        [2] = {
-            [1] = id,
-            [2] = vailondata
-        }
-    }
-    Storage.Networking.Units.FeedEvent:FireServer(unpack(args))
-end
----
-
-local datacraft = {
-    ["Senzu Bean"] = 80, 
-    ["Green Essence Stone"] = 35,
-    ["Blue Essence Stone"] = 15,
-    ["Yellow Essence Stone"] = 10,
-    ["Rainbow Essence Stone"] = 2,
 }
 
-function checkitemAM(name,amount)
-    local l_v9_Inventory_1 = InventoryHandler:GetInventory()
-    for i,v in pairs(l_v9_Inventory_1) do
-        if v.Data.Name == name then
-            return v.Amount >= amount
+function posfindunit(name)
+    for i1,v1 in pairs(meomeo) do
+        if (Workspace.Units[name].HumanoidRootPart.Position - v1[2]).Magnitude <= 1 then
+            return v1[1]
         end
-    end
-    return false
-end
-
-function craftitem(name)
-    if name == "Rainbow Essence Stone" then
-        local args = {
-            [1] = "Craft",
-            [2] = name,
-            [3] = 1
-        }
-        
-        Storage.Networking.State.CraftingEvent:FireServer(unpack(args))   
-        return
-    end
-    if checkitemAM("Green Essence Stone", 3) == true then
-        local args = {
-            [1] = "Craft",
-            [2] = name,
-            [3] = 1
-        }
-        
-        Storage.Networking.State.CraftingEvent:FireServer(unpack(args))
-        return
-    else
-        return "NeedGreen"
     end
 end
 
-function awakenvegeta()
-    getgenv().cantawake = false
-    if haveinlist("Vogita Super (Awakened)") then
-        return false
-    end
-    for i,v in pairs(datacraft) do
-        if checkitemAM(i, v) == false then
-            print(i)
-            getgenv().cantawake = true
-            if string.find(i, "Stone") and i ~= "Rainbow Essence Stone" then
-                if i ~= "Green Essence Stone" then
-                    if checkitemAM(i, v) == false then
-                        return craftitem(i)
-                    end
-                else
-                    if checkitemAM(i, v) == false then
-                        return "NeedGreen"
-                    end
-                end
-            elseif i ~= "Rainbow Essence Stone" then
-                if checkitemAM(i, v) == false then
-                    return "NeedBean"
-                end
-            elseif i == "Rainbow Essence Stone" then
-                if checkitemAM("Rainbow Essence Stone", 2) == true then
-                    print("Trong day")
-                else
-                    if checkitemAM("Pink Essence Stone", 1) ~= true then
-                        return craftitem("Pink Essence Stone")
-                    end
-                    if checkitemAM("Blue Essence Stone", 1) ~= true then
-                        return craftitem("Blue Essence Stone")
-                    end
-                    if checkitemAM("Red Essence Stone", 1) ~= true then
-                        return craftitem("Red Essence Stone")
-                    end
-                    if checkitemAM("Yellow Essence Stone", 1) ~= true then
-                        return craftitem("Yellow Essence Stone")
-                    end
-                    if checkitemAM("Purple Essence Stone", 1) ~= true then
-                        return craftitem("Purple Essence Stone")
-                    end
-                    print("Craft Rainbow")
-                    return craftitem("Rainbow Essence Stone")
-                end
-            end
+function calcmoneyupdate(name)
+    local path = "nil"
+    local unitne = posfindunit(name)
+    print(unitne)
+    for i,v in pairs(Storage.Modules.Data.Entities.UnitsData:GetDescendants()) do
+        if v.Name == unitne then
+            path = v
         end
     end
-    if getgenv().cantawake ~= true and not haveinlist("Vogita Super (Awakened)") then
-        local args = {
-            [1] = getbestunit("Vogita Super")[1]
-        }
-        
-        Storage.Networking.Units.EvolveEvent:FireServer(unpack(args))
-        wait(2)
-        if haveinlist("Vogita Super (Awakened)") then
-            equipunit(getbestunit("Vogita Super (Awakened)")[1])
-        end
-    end
-    if haveinlist("Vogita Super (Awakened)") == true then
-        return false
-    end
-end
-
--- find and change another legen Vogita Super (Awakened)
-pcall(function()
-    local unitdata = getunit()
-    if haveinlist(getgenv().config.combo_auto_igris[4]) == false then
-        for i,v in pairs(unitdata) do
-            if v.UnitData.Rarity == "Mythic" and v.UnitData.MaxPlacements > 3 and v.UnitData.Name ~= "Vogita Super" then
-                getgenv().config.combo_auto_igris[4] = v.UnitData.Name
-            end
-        end
-    end
-    if haveinlist("Vogita Super (Awakened)") then
-        getgenv().config.combo_auto_igris[1] = "Vogita Super (Awakened)"
-    end
-end)
-
--- custom macro kekekeke
-
-function custommacro(link,namemacro)
-    local xamlok = game:HttpGet(link, true)
-    getgenv().loadmacro = HttpService:JSONDecode(xamlok)
-
-    function findid(name)
-        for i,v in pairs(getunit()) do
-            if v.UnitData.Name == name then
-                return v.Identifier
-            end
-        end
-        return false
-    end
-    
-    function calcmoney(name)
-        local path = "nil"
-        for i,v in pairs(Storage.Modules.Data.Entities.UnitsData.Default:GetDescendants()) do
-            if v.Name == name then
-                path = v
-            end
-        end
-        local refcl = cloneref(path)
-        local vail = require(refcl)
-        return vail.Price
-    end
-    
-    function calcmoneyupdate(name,price)
-        local path = "nil"
-        for i,v in pairs(Storage.Modules.Data.Entities.UnitsData.Default:GetDescendants()) do
-            if v.Name == name then
-                path = v
-            end
-        end
-        local refcl = cloneref(path)
-        local vail = require(refcl)
-        for i,v in pairs(vail.Upgrades) do
-            if v.Price == price then
-                return i
-            end
-        end
-        return false
-    end
-    
-    function calcmoneyupdate2(name,index)
-        local path = "nil"
-        for i,v in pairs(Storage.Modules.Data.Entities.UnitsData.Default:GetDescendants()) do
-            if v.Name == name then
-                path = v
-            end
-        end
-        local refcl = cloneref(path)
-        local vail = require(refcl)
-        return vail.Upgrades[index].Price or 999999999999
-    end
-    
-    local allpos = {}
-    
-    for i,v in pairs(getgenv().loadmacro) do
-        if v.data.Method == "Render" then
-            if getgenv().loadmacro[i].data.Name == "Sosuke (Hebi)" then
-                local mainunit = getgenv().config.combo_auto_igris[4]
-                allpos[getgenv().loadmacro[i].data.CFrame] = getgenv().loadmacro[i].data.Name
-                print(getgenv().loadmacro[i].data.Id, findid(mainunit) , namemacro)
-                getgenv().loadmacro[i].data.Id = findid(mainunit)
-                getgenv().loadmacro[i].data.Name = mainunit
-                getgenv().loadmacro[i].data.Money = calcmoney(mainunit)
-            end
-        end
-    end
-    
-    local datasave = {}
-    
-    for i,v in pairs(getgenv().loadmacro) do
-        if v.data.Method == "Upgrade" then
-            if allpos[getgenv().loadmacro[i].data.CFrame] then
-                table.insert(datasave , {getgenv().loadmacro[i].data.CFrame, getgenv().loadmacro[i].data.Money})
-            end
-        end
-    end
-    
-    for i,v in pairs(getgenv().loadmacro) do
-        if v.data.Method == "Upgrade" then
-            for i1,v1 in pairs(datasave) do
-                if v1[1] == getgenv().loadmacro[i].data.CFrame and v1[2] == getgenv().loadmacro[i].data.Money then
-                    getgenv().loadmacro[i].data.Money = calcmoneyupdate2(getgenv().config.combo_auto_igris[4], calcmoneyupdate("Sosuke (Hebi)",v1[2]))
-                end
-            end
-        end
-    end
-    print("Write :" .. namemacro .. ".txt")
-    writefile(namemacro .. ".txt",HttpService:JSONEncode(getgenv().loadmacro))
-end
-
-pcall(function()
-    print("Let custom")
-    custommacro("https://raw.githubusercontent.com/pipipipipia23/aahsdasd-/refs/heads/main/LastMap", "LastMap")
-    custommacro("https://raw.githubusercontent.com/pipipipipia23/aahsdasd-/refs/heads/main/NextMap3", "NextMap3")
-end)
--- auto
-local plr = game.Players.LocalPlayer
-function checkplayerin(pos)
-	local res = false
-    for i,v in pairs(game.Players:GetChildren()) do
-		if v.Character then
-			if v.Character:FindFirstChild("HumanoidRootPart") and v.Name ~= plr.Name  then
-				if (v.Character.HumanoidRootPart.Position - pos.Position).Magnitude <= 10 then
-					res = true
-				end
-			end
-		end
-    end
-    return res
-end
-
--- calc map
-
-function getnextstage()
-    local a = "Stage1"
-    for i,v in pairs(LobbyHandler.PlayerData.Stages.Story) do
-        a = i
-    end
-    return a
-end
-
-function getnextmap()
-    local a = "Act1"
-    local num = 1
-    local nextstage = getnextstage()
-    for i,v in pairs(LobbyHandler.PlayerData.Stages.Story[nextstage]) do
-        if i ~= "Infinite" then
-            local actNumber = i:gsub("Act", "")
-            if tonumber(actNumber) > num then
-                num = tonumber(actNumber)
-                a = "Act" .. actNumber
-            end
-        else
-            if nextstage == "Stage3" then
-                num = 7
-                a = "Infinite"
-            end
-        end
-    end
-    if nextstage == "Stage3" and a == "Infinite" then
-        return false
-    else
-        return a
-    end
-end
-
-function legenstage()
-    local a = "Stage1"
-    for i,v in pairs(LobbyHandler.PlayerData.Stages.LegendStage) do
-        a = i
-    end
-    return a
-end
-
-function getnextmaplegend()
-    local a = "Act1"
-    local num = 1
-    local nextstage = legenstage()
-    for i,v in pairs(LobbyHandler.PlayerData.Stages.LegendStage[nextstage]) do
-        local actNumber = i:gsub("Act", "")
-        if tonumber(actNumber) > num and i ~= "Infinite" then
-            num = tonumber(actNumber)
-            a = "Act" .. actNumber
-        end
-    end
-    return a
-end
-
-function joinstage(stage, act, mode)
-    for i,v in pairs(Workspace.MainLobby.Lobby.Stories:GetChildren()) do
-        if checkplayerin(v.Teleport) == false then
-            local args = {
-                [1] = "Enter",
-                [2] = v
-            }
-            
-            print(Storage.Networking.LobbyEvent:FireServer(unpack(args)))
-            wait(.2)
-            local args = {
-                [1] = "Confirm",
-                [2] = {
-                    [1] = mode,
-                    [2] = stage,
-                    [3] = act,
-                    [4] = "Normal",
-                    [5] = 4,
-                    [6] = 0,
-                    [7] = true
-                }
-            }
-            
-            Storage.Networking.LobbyEvent:FireServer(unpack(args))
-            wait(.2)
-            local args = {
-                [1] = "Start"
-            }
-            
-            Storage.Networking.LobbyEvent:FireServer(unpack(args))        
-        end
-        wait(.5)
-    end
-end
-
-spawn(function()
-    writefile("TimeBanner.txt", tostring(gettimebanner() + tick()))
-end)
-
-spawn(function()
-    writefile("can_next_map.txt", "DeoDuocNehjhj")
-end)
-
-spawn(function()
-    writefile("farm_crystal.txt", "DeoDuocNehjhj")
-end)
-
-spawn(function()
-    if haveinlist("Igros") then
-        writefile(plr.Name .. ".txt", "Completed-AccHoanThanh")
-    end
-end)
-
---- function custom remove()
-function getfkingunit()
-    local a = 0
-    for i,v in pairs(getunit()) do
-        a = a + 1
-    end
-    return a
-end
-
-function getunitsell()
-    local allunit = {}
-    for i,v in pairs(getunit()) do
-        if (v.UnitData.Rarity == "Rare" or v.UnitData.Rarity == "Epic" or v.UnitData.Rarity == "Legendary") and v.UnitData.Name ~= "Sprintwagon" and v.UnitData.Name ~= "Alligator"and v.UnitData.Name ~= "Roku" then
-            table.insert(allunit, i)
-        end
-    end
-    return allunit
-end
-
-function removeunit()
-    if plr.PlayerGui.Windows.Units.Enabled == false then
-        getconnections(plr.PlayerGui.HUD.SideButtons.Buttons.Units.Button.Activated)[1]:Fire()
-        wait(1)
-    else
-        local listunit = getunitsell()
-        pcall(function()
-            getconnections(plr.PlayerGui.Windows.Units.Holder.Main.Units[listunit[1]].Button.Activated)[1]:Fire()
-        end)
-        wait(1)
-        pcall(function()
-            getconnections(plr.PlayerGui.InventoryHover.SelectedContainer[listunit[1] .. "Preview"].Main.Buttons.Sell.Button.Activated)[1]:Fire()
-        end)
-        wait(1)
-        for i,v in pairs(listunit) do 
-            pcall(function()
-                getconnections(plr.PlayerGui.Windows.Units.Holder.Main.Units[v].Button.Activated)[1]:Fire()
-            end)
-        end
-        wait(1)
-        pcall(function()
-            getconnections(plr.PlayerGui.Windows.Units.Holder.Sell.Button.Activated)[1]:Fire()
-        end)
-        wait(1)
-        pcall(function()
-            getconnections(plr.PlayerGui.Confirmation.Confirmation.Main.Yes.Button.Activated)[1]:Fire()
-        end)
-    end
-end
-
----
-
-function main()
-    if getmoney() > 500 and getgenv().nomorebanner ~= true then
-        if getfkingunit() > 90 then
-            removeunit()
-            return
-        end        
-        print("Unit : ", getgenv().unitinbanner)
-        if getgenv().unitinbanner == nil then
-            gethigher()
-            return
-        end
-
-        for i,v in pairs(getgenv().config.combo_auto_igris) do
-            if getgenv().unitinbanner == v and not haveinlist(v) then
-                autosummon()
-                return
-            end
-        end
-        getgenv().nomorebanner = true
-    else 
-        -- if getlevel() > 30 then
-            if getgenv().asdhsuadsahjda == nil then
-                for i,v in pairs(getgenv().config.combo_auto_igris) do
-                    local getbest = getbestunit(v)
-                    if getbest ~= nil then
-                        equipunit(getbest[1])
-                        if getbest[2].Level < 50 and v ~= "Sprintwagon" then
-                            if (v == "Alligator" and getbest[2].Level < 30) or v ~= "Alligator" then
-                                findandfeed(getbest[1])
-                                getgenv().notfulllvl = true
-                            end
-                        end
-                    else
-                        getgenv().ditmevailon = true
-                        equipunit(getbestunit("Roku")[1])
-                    end
-                    wait(2)
-                end
-                getgenv().asdhsuadsahjda = false
-            end
-            if getgenv().ditmevailon == true then
-                print("Go here dit me may2")
-                local stagene = "Act" .. tostring(math.random(1,2))
-                joinstage("Stage1", stagene, "Story")
-                return
-            end
-            if getgenv().ditmevailon ~= true and getgenv().notfulllvl == true then
-                print("Go here dit me may")
-                joinstage("Stage1", "Act3", "Story")
-                getgenv().stop = true
-                return
+    local refcl = cloneref(path)
+    local vail = require(refcl)
+    for i,v in pairs(Workspace.Units:GetChildren()) do
+        if v.Name == name then
+            if not dataplace[v.Name] then
+                dataplace[v.Name] = 1
             else
-                spawn(function()
-                    writefile("can_next_map.txt", "Duocnekhjhj")
-                end)
-                if getnextmap() ~= false then
-                    print("CA1")
-                    joinstage(getnextstage(), getnextmap(), "Story")
-                else
-                    local awakenne = awakenvegeta()
-                    if awakenne == nil then
-                        return
+                dataplace[v.Name] = dataplace[v.Name] + 1
+            end
+            print(v.Name , dataplace[v.Name])
+            return vail.Upgrades[dataplace[v.Name] + 1].Price
+        end
+    end
+end
+local index = 1
+if getgenv().recmacro == true then
+    Storage.Networking.UnitEvent.OnClientEvent:Connect(function(...)
+        local args = {...}
+        pcall(function()
+            if args[1] == "Render" then
+                print("one here")
+                defaultindex = defaultindex + 1
+                table.insert(meomeo,{args[2].Name, args[2].Position})
+                table.insert(macro, {data = {Method = args[1] ,CFrame = tostring(args[2].Position), Money = calcmoney(args[2].Name), Id = args[2].Identifier, Name = args[2].Name , Index = args[2].Rotation}})
+            end
+            if args[1] == "Upgrade" then
+                print("one here")
+                defaultindex = defaultindex + 1
+                table.insert(macro, {data = {Method = args[1] , Money = calcmoneyupdate(args[2]), CFrame = tostring(getpos(args[2]))}})
+            end
+            if args[1] == "Remove" then
+                print("one here")
+                defaultindex = defaultindex + 1
+                table.insert(macro, {data = {Method = "Sell" , Money = calcmoneyupdate(args[2]), CFrame = tostring(getpos(args[2]))}})
+            end
+        end)
+    end)
+end
+
+getgenv().loadmacro = {}
+getgenv().farmcrystall = false
+getgenv().timebanner = 0
+getgenv().nextmap = false
+function abc()
+    wait(3)
+    local gamedata = GameHandler.GameData
+
+    if gamedata.MaxPlayers > 1 then
+        local ts = TeleportRef
+        local p = plr
+        ts:Teleport(16146832113, p)
+    else
+        print("Time banner")
+        getgenv().timebanner = readfile("TimeBanner.txt")
+
+        getgenv().nextmap = readfile("can_next_map.txt") == "Duocnekhjhj"
+        getgenv().farmcrystall = readfile("farm_crystal.txt") == "Duocnekhjhj"
+
+        if (gamedata.Act == "Act1" or gamedata.Act == "Act2") and gamedata.Stage == "Stage1" then
+            local a,b = pcall(function()
+                print("Act1")
+                getgenv().loadmacro = HttpService:JSONDecode(readfile("Act1.txt"))
+            end)
+            if not a then
+                game:Shutdown()
+            end
+        elseif gamedata.Stage == "Stage1" then
+            local a,b = pcall(function()
+                print("Nextmap1")
+                getgenv().loadmacro = HttpService:JSONDecode(readfile("NextMap1.txt"))
+            end)
+            if not a then
+                game:Shutdown()
+            end
+        elseif gamedata.Stage == "Stage3" and gamedata.StageType == "Story" then
+            local a,b = pcall(function()
+                print("LastMap")
+                getgenv().loadmacro = HttpService:JSONDecode(readfile("NextMap3.txt"))
+            end)
+            if not a then
+                game:Shutdown()
+            end
+        elseif gamedata.Stage == "Stage2" then
+            local a,b = pcall(function()
+                print("Nextmap2")
+                getgenv().loadmacro = HttpService:JSONDecode(readfile("NextMap2.txt"))
+            end)
+            if not a then
+                game:Shutdown()
+            end
+        elseif gamedata.Stage == "Stage3" and gamedata.StageType == "LegendStage" then
+            if gamedata.Stage == "Stage3" and gamedata.Act == "Act3" then
+                getgenv().deoduocout = true
+            end
+            local a,b = pcall(function()
+                print("Danh boss")
+                getgenv().loadmacro = HttpService:JSONDecode(readfile("LastMap.txt"))
+            end)
+            if not a then
+                game:Shutdown()
+            end
+        end
+    end
+end
+
+abc()
+
+function stringtopos(positionString)
+    local positionParts = string.split(positionString, ", ")
+    local positionVector = Vector3.new(tonumber(positionParts[1]), tonumber(positionParts[2]), tonumber(positionParts[3]))    
+    return positionVector
+end
+
+function click(a)
+    VirtualInputManager:SendMouseButtonEvent(a.AbsolutePosition.X+a.AbsoluteSize.X/2,a.AbsolutePosition.Y+50,0,true,a,1)
+    VirtualInputManager:SendMouseButtonEvent(a.AbsolutePosition.X+a.AbsoluteSize.X/2,a.AbsolutePosition.Y+50,0,false,a,1)
+end
+
+local index = 1
+spawn(function() 
+	while true do wait(0)
+		local a,b = pcall(function()
+            if getgenv().recmacro ~= true then
+                local step1 = getgenv().loadmacro[index].data
+                if step1.Method == "Render" then
+                    wait(1)
+                    local YEN = v22:GetYen()
+                    if YEN >= step1.Money then
+                        print("IN HERE4?")
+                        plr.Character.Humanoid:MoveTo(Vector3.new(stringtopos(step1.CFrame).x,plr.Character.HumanoidRootPart.Position.y,stringtopos(step1.CFrame).z))
+                        print(index,"PlaceUnit", step1.Name)
+                        l_Name_2 = {
+                            step1.Name, 
+                            step1.Id, 
+                            stringtopos(step1.CFrame), 
+                            step1.Index
+                        }                
+                        remote("Render", l_Name_2)
+                        index = index + 1
                     end
-                    if awakenne == false then
-                        print("CA2")
-                        print(legenstage(), getnextmaplegend(),"LegendStage")
-                        joinstage(legenstage(), getnextmaplegend(), "LegendStage")
-                    else
-                        if awakenne == "NeedBean" then
-                            spawn(function()
-                                writefile("farm_crystal.txt", "Duocnekhjhj")
-                            end)
-                            print("CA3")
-                            joinstage("Stage1", "Act3" , "Story")
+                end
+                if step1.Method == "Upgrade" and postouid(stringtopos(step1.CFrame)) ~= false then
+                    wait(1)
+                    local YEN = v22:GetYen()
+                    if YEN >= step1.Money then
+                        plr.Character.Humanoid:MoveTo(Vector3.new(stringtopos(step1.CFrame).x,plr.Character.HumanoidRootPart.Position.y,stringtopos(step1.CFrame).z))
+                        if postouid(stringtopos(step1.CFrame)) == false then
                             return
                         end
-                        if legenstage() == "Stage3" and awakenne == "NeedGreen" then
-                            spawn(function()
-                                writefile("farm_crystal.txt", "Duocnekhjhj")
-                            end)
-                            print("CA4")
-                            local stagene = "Act" .. tostring(math.random(1,2))
-                            joinstage("Stage2", stagene, "LegendStage")
-                        else
-                            print("CA5")
-                            joinstage(legenstage(), getnextmaplegend(), "LegendStage")
-                        end
+                        print(index,"Upgrade", step1.Money, postouid(stringtopos(step1.CFrame)))
+                        print("IN HERE5?")
+                        remote("Upgrade", postouid(stringtopos(step1.CFrame)))
+                        index = index + 1
                     end
                 end
             end
-        -- else
-        --     print("chay thoi")
-        --     wait(1)
-        --     equipunit(getbestunit("Roku")[1])
-        --     wait(1)
-        --     joinstage("Stage1", "Act1")
-        --     getgenv().stop = true
-        --end
-    end
+		end)
+	end
+end)
+
+-- auto out
+print(getgenv().farmcrystall, "Auto out active")
+if getgenv().farmcrystall == true or getgenv().deoduocout == true then
+    spawn(function()
+        local tickout = tick()
+        repeat wait()
+
+        until tick() - tickout >= 60 * 90
+        local ts = TeleportRef
+        local p = plr
+        ts:Teleport(16146832113, p)
+    end)
 end
 
-spawn(function() 
-    while getgenv().stop ~= true do wait()
-        local a,b = pcall(main)
-        print(a,b)
+-- GameHandler
+spawn(function()
+    while true do wait(1)
+        pcall(function()
+            for i,v in pairs(plr.PlayerGui:GetChildren()) do
+                if string.find(v.Name, "Tutorial") then
+                    print("get connection")
+                    getconnections(v.Holder.Main.Close.Button.Activated)[1]:Fire()
+                    return
+                end
+            end
+            if plr.PlayerGui:FindFirstChild("RewardsDisplay") then
+                if plr.PlayerGui.RewardsDisplay.Enabled == true then
+                    spawn(function() 
+                        click(plr.PlayerGui.ViewFrames.ViewFrame)
+                    end)
+                    return
+                end
+            end
+            if plr.PlayerGui:FindFirstChild("SkipWave") then
+                print("get connection")
+                getconnections(plr.PlayerGui.SkipWave.Holder.Yes.Button.Activated)[1]:Fire()
+            end
+            if plr.PlayerGui.EndScreen.Container.Visible == true and plr.PlayerGui.EndScreen.Enabled == true then
+                if getmoney() >= 15000 and tick() > tonumber(getgenv().timebanner) and getgenv().deoduocout ~= true then
+                    spawn(function()
+                        local ts = TeleportRef
+                        local p = plr
+                        ts:Teleport(16146832113, p)
+                    end)
+                    return
+                end
+                if getgenv().nextmap == true then
+                    print("Duoc ne dit me asdasdsadsadsad")
+                    if plr.PlayerGui.EndScreen.Container.EndScreen.Main.FailedLabel.Visible == false then
+                        if getgenv().farmcrystall == false and getgenv().deoduocout ~= true then
+                            spawn(function()
+                                local ts = TeleportRef
+                                local p = plr
+                                ts:Teleport(16146832113, p)
+                                return
+                            end)
+                        else
+                            getconnections(plr.PlayerGui.EndScreen.Container.EndScreen.Retry.Button.Activated)[1]:Fire()
+                            wait(3)
+                            index = 1
+                        end
+                    else
+                        spawn(function()
+                            print("get connection")
+                            getconnections(plr.PlayerGui.EndScreen.Container.EndScreen.Retry.Button.Activated)[1]:Fire()
+                            wait(3)
+                            index = 1
+                            return
+                        end)
+                    end
+                    return
+                end
+                spawn(function()
+                    print("get connection")
+                    getconnections(plr.PlayerGui.EndScreen.Container.EndScreen.Retry.Button.Activated)[1]:Fire()
+                    wait(3)
+                    index = 1
+                end)
+            end
+        end)
     end
 end)
 
+function findUnit(name)
+    for i,v in pairs(UnitEquipedData._Cache) do
+        if type(v) == "table" then
+            if UnitsName[v.Identifier] == name then
+                return true
+            end
+        end
+        return false
+    end
+end
 
--- if game.PlaceId == 16146832113 then
---     return
--- end
+function jump()
+    game:GetService("VirtualInputManager"):SendKeyEvent(true, 32, false, game)
+    wait(4)
+    game:GetService("VirtualInputManager"):SendKeyEvent(false, 32, false, game)
+end
+
+spawn(function()
+    while true do wait()
+        pcall(function()
+            local tickm = tick()
+            repeat wait()
+            until tick() - tickm >= 30
+            jump()
+        end)
+    end
+end)
+
+spawn(function()
+    while getgenv().recmacro == true do wait(1)
+        writefile("dmm.txt", HttpService:JSONEncode(macro))
+    end
+end)
+end
