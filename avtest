@@ -1,7 +1,6 @@
 wait(10)
 if game.PlaceId == 16146832113 then
-
-getgenv().config = { -- dont change it (have smart config combo auto)
+    getgenv().config = { -- dont change it (have smart config combo auto)
     combo_auto_igris = {
         "Vogita Super",
         "Sprintwagon",
@@ -328,7 +327,7 @@ end
 
 function ismythic(v)
     if Storage.Modules.Data.Entities.UnitsData.Default.Mythic:FindFirstChild(v) then
-        return true
+        return v
     end
     return false
 end
@@ -939,7 +938,6 @@ end)
 -- if game.PlaceId == 16146832113 then
 --     return
 -- end
-
 else
     getgenv().config = { -- dont change it (have smart config combo auto)
     combo_auto_igris = {
