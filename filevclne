@@ -1,6 +1,7 @@
 getgenv().config = {
     buygamepass = false,
-    buyonlyslot = true
+    buyonlyslot = true, 
+    lockgem = 5000000000000,
 }
 
 repeat wait() until game:IsLoaded()
@@ -442,7 +443,8 @@ function fullyAttack(Enemies)
         local time = 0
         if ((plr.leaderstats:GetAttribute("Rank") >= 5 and getgenv().MaxDPS >= 200000000000) or getgenv().MaxDPS <= 200000000000) or not indungeon then
             repeat wait(.5)
-                if fullRank6 and not indungeon then
+                local gemne = plr.leaderstats:GetAttribute("Gems")
+                if (fullRank6 and gemne < getgenv().config.lockgem) and not indungeon then
                     EnemiNetwork:Fire({
                         Event = "EnemyDestroy", 
                         Enemy = enemy
