@@ -44,6 +44,7 @@ local indungeon = (game.PlaceId ~= 87039211657390) and true or false
 local enemiesblockdungeon = {}
 local fullRank6 = nil
 local haspet = false
+local hasmaxed = false
 local dpsSword = 0
 getgenv().MaxDPS = 0
 getgenv().Dungeon = indungeon
@@ -284,7 +285,7 @@ function step2check(nameMaxEnemies)
             sameRankPetCount = sameRankPetCount + 1
         end
     end
-
+    hasmaxed = allMaxed
     if firstPetName == nil then
         fullRank6 = false
     end
@@ -413,7 +414,9 @@ end
 
 task.spawn(function()
     while true do task.wait(.1)
-        pcall(Attack)
+        if hasmaxed then
+            pcall(Attack)
+        end
     end
 end)
 
@@ -740,7 +743,11 @@ function updateDps()
     if getgenv().MaxDPS == 0 then
         getgenv().MaxDPS = 2
     end
-    getgenv().MaxDPS = (getgenv().MaxDPS + dpsSword) * 3
+    if hasmaxed then
+        getgenv().MaxDPS = (getgenv().MaxDPS + dpsSword) * 3
+    else
+        getgenv().MaxDPS = getgenv().MaxDPS * 3
+    end
     print(getgenv().MaxDPS)
     task.wait(10)
     autoBuySlot()
