@@ -463,6 +463,7 @@ function fullyAttack(Enemies)
         else
             setValue("blockenemies", Enemies.Name)
             table.insert(enemiesblockdungeon, Enemies.Name)
+            equipMaxPetInDungeon()
         end
         print("Concak")
     end
@@ -509,6 +510,10 @@ function DameProtal(v)
     local v191 = math.log10(getPetDame(v.Name, v190) + 1) * 100000;
     local v192 = false and 500000000 or 0;
     return -math.floor(v191 + math.log(getPetDame(v.Name) + 1, 2) * 10 + v192);
+end
+
+function DameProtal2(v)
+    return math.floor(getPetDame(v.Name));
 end
 
 --- function equip max sword
@@ -594,6 +599,44 @@ end
 
 --- function equip max pet
 
+function equipMaxPetInDungeon()
+    local listpet = {}
+    for i,v in pairs(plr.leaderstats.Inventory.Pets:GetChildren()) do
+        local vcl = v:GetAttributes()
+        if vcl.Rank then
+            table.insert(listpet, {
+                Name = v.Name,
+                Order = DameProtal2(v);
+            })
+        end
+    end
+    table.sort(listpet, function(a,b)
+        return a.Order > b.Order
+    end)
+    local v40 = {};
+    for i = 1, math.min(ExtraFunction.GetMaxPets(plr), #listpet) do
+        table.insert(v40, listpet[i].Name);
+    end
+
+    v50 = {}
+
+    for i,v in pairs(listpet) do
+        if table.find(v40, v.Name) == nil and i > 40 then
+            table.insert(v50, v.Name)
+        end
+    end
+
+    PetNetwork:Fire({
+        Event = "EquipBest", 
+        Pets = v40
+    })
+    task.wait(.5)
+    PetNetwork:Fire({
+        Event = "SellPet", 
+        Pets = v50
+    });
+end
+
 function equipMaxPet()
     local listpet = {}
     for i,v in pairs(plr.leaderstats.Inventory.Pets:GetChildren()) do
@@ -617,7 +660,7 @@ function equipMaxPet()
     v50 = {}
 
     for i,v in pairs(listpet) do
-        if table.find(v40, v.Name) == nil and i > 7 then
+        if table.find(v40, v.Name) == nil and i > 40 then
             table.insert(v50, v.Name)
         end
     end
