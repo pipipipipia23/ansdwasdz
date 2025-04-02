@@ -100,9 +100,11 @@ local dataDungeon = {
 }
 
 --- lowest
-settings().Rendering.QualityLevel = Enum.QualityLevel.Level01
-UserSettings().GameSettings.MasterVolume = 0
-UserSettings().GameSettings.SavedQualityLevel = Enum.SavedQualitySetting.QualityLevel1
+pcall(function()
+    settings().Rendering.QualityLevel = Enum.QualityLevel.Level01
+    UserSettings().GameSettings.MasterVolume = 0
+    UserSettings().GameSettings.SavedQualityLevel = Enum.SavedQualitySetting.QualityLevel1
+end)
 pcall(function() 
     for i,v in getrunningscripts() do
         local a,b =pcall(function() 
@@ -114,7 +116,10 @@ pcall(function()
     end
 end)
 pcall(function()
-    workspace.__Extra:Destroy()
+    workspace.__Extra.__Effects:Destroy()
+    workspace.__Extra.__Leaderboard:Destroy()
+    workspace.__Extra.__Musics:Destroy()
+    workspace.__Extra.__Cache:Destroy()
 end)
 for k,v in plr.PlayerGui:GetChildren() do 
     v:Destroy()
