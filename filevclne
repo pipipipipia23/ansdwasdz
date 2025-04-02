@@ -1,4 +1,4 @@
-wait(5)
+wait(10)
 getgenv().config = {
     buygamepass = true,
     buyonlyslot = true, 
@@ -9,7 +9,6 @@ repeat wait() until game:IsLoaded()
 
 pcall(function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/pipipipipia23/ansdwasdz/refs/heads/main/quanhlow"))()
-    loadstring(game:HttpGet("https://files.cuonggdev.com/AC_Track.lua"))()
 end)
 
 local Services = setmetatable({}, {
