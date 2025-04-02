@@ -847,6 +847,7 @@ function FunctionDungeon() -- dit con me decomplie deo work nhe con me may
             if (tick() - data.allowtime) < data.time then
                 if data.hasfinish then
                     joindungeon()
+                    getgenv().Dungeon = true
                 end
             else
                 adumemay()
