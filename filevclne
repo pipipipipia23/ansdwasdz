@@ -486,7 +486,7 @@ function fullyAttack(Enemies)
             PetNetwork:Fire(goPet);
             task.wait(1)
         end
-        repeat task.wait(.1)
+        repeat task.wait(.5)
             setValue("EnemiesId", Enemies.Name)
         until PetIsAttackingGetId() ~= Enemies.Name or not getgenv().Dungeon
         task.spawn(function()
