@@ -71,14 +71,14 @@ function getValue(name)
     return nil
 end
 
-task.spawn(function()
-    while true do
-        local tickn = tick()
-        repeat wait()
-        until tick() - tickn >= 20
-        enemiesblockdungeon = {}
-    end
-end)
+-- task.spawn(function()
+--     while true do
+--         local tickn = tick()
+--         repeat wait()
+--         until tick() - tickn >= 20
+--         enemiesblockdungeon = {}
+--     end
+-- end)
 
 task.spawn(function()
     while true do
@@ -496,8 +496,6 @@ function fullyAttack(Enemies)
         if not indungeon then
             equipMaxPet()
         else
-            setValue("blockenemies", Enemies.Name)
-            table.insert(enemiesblockdungeon, Enemies.Name)
             equipMaxPetInDungeon()
         end
         print("Concak")
@@ -849,11 +847,12 @@ function FunctionDungeon() -- dit con me decomplie deo work nhe con me may
                 end
             else
                 adumemay()
+                getgenv().Dungeon = true
             end
         else
             adumemay()
+            getgenv().Dungeon = true
         end
-        getgenv().Dungeon = true
     end
 end
 
