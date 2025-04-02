@@ -795,7 +795,7 @@ end)
 
 local function calctime()
     local currentTime = os.time()
-    local notificationInterval = 2160 -- 36 phút
+    local notificationInterval = 1800 -- 36 phút
     local nextTime = math.ceil(currentTime / notificationInterval) * notificationInterval
     return nextTime - currentTime
 end
