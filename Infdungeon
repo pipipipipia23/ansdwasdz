@@ -492,7 +492,7 @@ function Attack()
 end
 
 task.spawn(function()
-    while haspet == false do task.wait(.2)
+    while true do task.wait(.2)
         pcall(Attack)
     end
 end)
