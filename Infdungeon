@@ -515,7 +515,7 @@ function fullyAttack(Enemies)
                 goPet.PetPos[v] = Enemies.Position
             end
             PetNetwork:Fire(goPet);
-            task.wait(.5)
+            task.wait(1)
         end
         repeat task.wait(.5)
             setValue("EnemiesId", Enemies.Name)
