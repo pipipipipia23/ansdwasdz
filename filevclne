@@ -1,5 +1,4 @@
 wait(10)
-wait(5)
 getgenv().config = {
     buygamepass = true,
     buyonlyslot = true, 
