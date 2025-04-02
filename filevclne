@@ -1,6 +1,6 @@
 wait(5)
 getgenv().config = {
-    buygamepass = false,
+    buygamepass = true,
     buyonlyslot = true, 
     lockgem = 5000000000000,
 }
@@ -838,6 +838,7 @@ function FunctionDungeon() -- dit con me decomplie deo work nhe con me may
                     end    
                 end
             end
+            getgenv().Dungeon = true
         end
         local data = readFile(namefile)
         if data then
@@ -847,11 +848,9 @@ function FunctionDungeon() -- dit con me decomplie deo work nhe con me may
                 end
             else
                 adumemay()
-                getgenv().Dungeon = true
             end
         else
             adumemay()
-            getgenv().Dungeon = true
         end
     end
 end
