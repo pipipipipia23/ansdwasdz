@@ -441,7 +441,7 @@ end
 function Arise(enemi)
     local tickn = tick()
     repeat wait(.1)
-        if ((plr.leaderstats:GetAttribute("Rank") >= 5 and getgenv().MaxDPS >= 200000000000) or getgenv().MaxDPS <= 200000000000) or not indungeon then
+        if ((plr.leaderstats:GetAttribute("Rank") >= 5 and getgenv().MaxDPS >= 400000000000) or getgenv().MaxDPS <= 400000000000) or not indungeon then
             local gemne = plr.leaderstats:GetAttribute("Gems")
             if (fullRank6 and gemne < getgenv().config.lockgem) and not indungeon then
                 EnemiNetwork:Fire({
@@ -865,7 +865,7 @@ function finishDungeon()
 end
 
 function letfkinggorank()
-    if plr.leaderstats:GetAttribute("Rank") < 5 and getgenv().MaxDPS >= 200000000000 then
+    if plr.leaderstats:GetAttribute("Rank") < 5 and getgenv().MaxDPS >= 400000000000 then
         GenerealNetwork:Fire({
             Event = "DungeonAction",
             Action = "TestEnter",
