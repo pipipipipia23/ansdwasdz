@@ -860,6 +860,9 @@ function finishDungeon()
     if #Services.CollectionService:GetTagged("EnemyServer") == 0 then
         data.hasfinish = true
         writeFile(namefile, data)
+    else
+        data.hasfinish = false
+        writeFile(namefile, data)
     end
 end
 
